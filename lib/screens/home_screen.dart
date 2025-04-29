@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:dio/dio.dart';
-import 'package:measureapp/utils/secure_storage.dart';
+import 'package:measureapp/services/api_service.dart';
+import 'package:measureapp/utils/date_utils.dart';
+import 'package:measureapp/widgets/big_button.dart';
+import 'package:measureapp/widgets/no_sessions_block.dart';
+import 'package:measureapp/widgets/session_block.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 class HomeScreen extends StatefulWidget {
   @override
@@ -8,43 +12,33 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  late Dio dio;
-  String _sessionsData = 'Loading...';
+  final ApiService _apiService = ApiService();
+  String _patientName = '';
+  List<dynamic> _sessions = [];
+  bool _isLoading = true;
+  String _errorMessage = '';
+  bool _noSessionsFound = false;
 
   @override
   void initState() {
     super.initState();
-    dio = Dio();
     _fetchSessionsData();
   }
 
   Future<void> _fetchSessionsData() async {
     try {
-      String? token = await SecureStorage.getToken();
-
-      if (token == null) {
-        setState(() {
-          _sessionsData = 'No token found';
-        });
-        return;
-      }
-
-      dio.options.headers['Authorization'] = 'Bearer $token';
-
-      final response = await dio.get('http://x.x.x.x:5005/api/patient/sessions');
-
-      if (response.statusCode == 200) {
-        setState(() {
-          _sessionsData = response.data.toString();
-        });
-      } else {
-        setState(() {
-          _sessionsData = 'Failed to load data';
-        });
-      }
+      final data = await _apiService.fetchSessions();
+      setState(() {
+        _patientName = data['patientName'] ?? '';
+        _sessions = data['sessions'] ?? [];
+        _isLoading = false;
+        _noSessionsFound = _sessions.isEmpty;
+      });
     } catch (e) {
       setState(() {
-        _sessionsData = 'Error: $e';
+        _errorMessage = 'Error: $e';
+        _isLoading = false;
+        _noSessionsFound = false;
       });
     }
   }
@@ -52,17 +46,72 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Home Screen'),
-      ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: SingleChildScrollView(
-          child: Text(
-            _sessionsData,
-            style: TextStyle(fontSize: 16),
-          ),
-        ),
+      body: RefreshIndicator(
+        onRefresh: _fetchSessionsData,
+        child: _isLoading
+            ? Center(child: CircularProgressIndicator())
+            : _errorMessage.isNotEmpty
+                ? ListView(
+                    physics: const AlwaysScrollableScrollPhysics(),
+                    children: [Center(child: Text(_errorMessage))],
+                  )
+                : ListView(
+                    physics: const AlwaysScrollableScrollPhysics(),
+                    padding: const EdgeInsets.all(16.0),
+                    children: [
+                      Text(
+                        getGreeting(),
+                        style: TextStyle(
+                            fontSize: 35,
+                            color: Color(0xFF1D53BF),
+                            fontWeight: FontWeight.bold),
+                      ),
+                      Text(
+                        _patientName,
+                        style: TextStyle(
+                            fontSize: 25,
+                            color: Colors.black,
+                            fontWeight: FontWeight.bold),
+                      ),
+                      SizedBox(height: 10),
+                      if (_noSessionsFound)
+                        NoSessionsBlock()
+                      else
+                        ..._sessions.asMap().entries.map((entry) {
+                          int index = entry.key;
+                          var session = entry.value;
+                          return Column(
+                            children: [
+                              SessionBlock(session: session),
+                              SizedBox(height: 4),
+                            ],
+                          );
+                        }).toList(),
+                      Row(
+                        children: [
+                          Expanded(
+                            child: BigButton(
+                              title: 'Groeisafari',
+                              iconWidget: SvgPicture.asset(
+                                'assets/icons/lion.svg',
+                              ),
+                              onPressed: () {},
+                            ),
+                          ),
+                          SizedBox(width: 8),
+                          Expanded(
+                            child: BigButton(
+                              title: 'Groeicurve',
+                              iconWidget: SvgPicture.asset(
+                                'assets/icons/loop.svg',
+                              ),
+                              onPressed: () {},
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
       ),
     );
   }
