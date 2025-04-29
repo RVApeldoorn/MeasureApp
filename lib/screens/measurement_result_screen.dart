@@ -1,0 +1,39 @@
+import 'package:flutter/material.dart';
+import 'package:measureapp/utils/date_utils.dart';
+
+class MeasurementResultScreen extends StatelessWidget {
+  final String measurementName;
+  final List<dynamic> measurementValue;
+
+  const MeasurementResultScreen({required this.measurementName, required this.measurementValue});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Ingevulde Meting'),
+      ),
+      body: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              measurementName,
+              style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+            ),
+            SizedBox(height: 20),
+            ...measurementValue.map((value) {
+              return Card(
+                child: ListTile(
+                  title: Text('Waarde: ${value['value']}'),
+                  subtitle: Text('Datum: ${value['takenAt'] != null ? formatDateOnly(value['takenAt']) : 'Onbekend'}'),
+                ),
+              );
+            }).toList(),
+          ],
+        ),
+      ),
+    );
+  }
+}

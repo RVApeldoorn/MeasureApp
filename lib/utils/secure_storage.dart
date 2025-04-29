@@ -14,7 +14,7 @@ class SecureStorage {
   }
 
   static Future<void> savePin(String pin) async {
-    final hashedPin = _hashPin(pin);
+    final hashedPin = hashPin(pin);
     await _storage.write(key: 'pin_code', value: hashedPin);
   }
 
@@ -26,7 +26,7 @@ class SecureStorage {
     await _storage.deleteAll();
   }
 
-  static String _hashPin(String pin) {
+  static String hashPin(String pin) {
     final bytes = utf8.encode(pin);
     final digest = sha256.convert(bytes);
     return digest.toString();
