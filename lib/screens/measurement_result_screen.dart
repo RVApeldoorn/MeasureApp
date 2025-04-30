@@ -11,7 +11,7 @@ class MeasurementResultScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Ingevulde Meting'),
+        title: Text('Measurement Result'),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -26,11 +26,13 @@ class MeasurementResultScreen extends StatelessWidget {
             ...measurementValue.map((value) {
               return Card(
                 child: ListTile(
-                  title: Text('Waarde: ${value['value']}'),
-                  subtitle: Text('Datum: ${value['takenAt'] != null ? formatDateOnly(value['takenAt']) : 'Onbekend'}'),
+                  title: Text('Value: ${value['value']}'),
+                  subtitle: Text(
+                    'Date: ${value['takenAt'] != null ? formatDateOnly(value['takenAt']) : 'Onbekend'}',
+                  ),
                 ),
               );
-            }).toList(),
+            }),
           ],
         ),
       ),

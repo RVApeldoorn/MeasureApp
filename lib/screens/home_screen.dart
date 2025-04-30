@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:measureapp/services/api_service.dart';
 import 'package:measureapp/utils/date_utils.dart';
 import 'package:measureapp/widgets/big_button.dart';
@@ -36,7 +37,7 @@ class _HomeScreenState extends State<HomeScreen> {
       });
     } catch (e) {
       setState(() {
-        _errorMessage = 'Error: $e';
+        _errorMessage = e.toString();
         _isLoading = false;
         _noSessionsFound = false;
       });
@@ -45,6 +46,8 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final t = AppLocalizations.of(context)!;
+
     return Scaffold(
       body: RefreshIndicator(
         onRefresh: _fetchSessionsData,
@@ -53,32 +56,33 @@ class _HomeScreenState extends State<HomeScreen> {
             : _errorMessage.isNotEmpty
                 ? ListView(
                     physics: const AlwaysScrollableScrollPhysics(),
-                    children: [Center(child: Text(_errorMessage))],
+                    children: [Center(child: Text('error: $_errorMessage'))],
                   )
                 : ListView(
                     physics: const AlwaysScrollableScrollPhysics(),
                     padding: const EdgeInsets.all(16.0),
                     children: [
                       Text(
-                        getGreeting(),
+                        getGreeting(context),
                         style: TextStyle(
-                            fontSize: 35,
-                            color: Color(0xFF1D53BF),
-                            fontWeight: FontWeight.bold),
+                        fontSize: 35,
+                        color: Color(0xFF1D53BF),
+                        fontWeight: FontWeight.bold,
+                      ),
                       ),
                       Text(
                         _patientName,
                         style: TextStyle(
-                            fontSize: 25,
-                            color: Colors.black,
-                            fontWeight: FontWeight.bold),
+                        fontSize: 25,
+                        color: Colors.black,
+                        fontWeight: FontWeight.bold,
+                      ),
                       ),
                       SizedBox(height: 10),
                       if (_noSessionsFound)
                         NoSessionsBlock()
                       else
                         ..._sessions.asMap().entries.map((entry) {
-                          int index = entry.key;
                           var session = entry.value;
                           return Column(
                             children: [
@@ -86,12 +90,12 @@ class _HomeScreenState extends State<HomeScreen> {
                               SizedBox(height: 4),
                             ],
                           );
-                        }).toList(),
+                      }),
                       Row(
                         children: [
                           Expanded(
                             child: BigButton(
-                              title: 'Groeisafari',
+                              title: t.growth_safari,
                               iconWidget: SvgPicture.asset(
                                 'assets/icons/lion.svg',
                               ),
@@ -101,7 +105,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           SizedBox(width: 8),
                           Expanded(
                             child: BigButton(
-                              title: 'Groeicurve',
+                              title: t.growth_curve,
                               iconWidget: SvgPicture.asset(
                                 'assets/icons/loop.svg',
                               ),

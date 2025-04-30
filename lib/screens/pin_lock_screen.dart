@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:measureapp/utils/secure_storage.dart';
 import 'package:measureapp/screens/home_screen.dart';
 import 'package:measureapp/screens/setup_screen.dart';
@@ -46,7 +47,7 @@ class _PinLockScreenState extends State<PinLockScreen> {
       );
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Ongeldige PIN')),
+        SnackBar(content: Text(AppLocalizations.of(context)!.pin_error)),
       );
       setState(() {
         _pinController.clear();
@@ -59,15 +60,14 @@ class _PinLockScreenState extends State<PinLockScreen> {
       context: context,
       builder: (context) {
         return AlertDialog(
-          title: const Text('Bevestiging'),
-          content: const Text(
-              'Weet je zeker dat je je PIN wilt resetten? De app zal opnieuw worden ingesteld.'),
+          title: Text(AppLocalizations.of(context)!.pin_reset_confirm_title),
+          content: Text(AppLocalizations.of(context)!.pin_reset_confirm_content),
           actions: [
             TextButton(
               onPressed: () {
                 Navigator.of(context).pop();
               },
-              child: const Text('Annuleren'),
+              child: Text(AppLocalizations.of(context)!.cancel),
             ),
             TextButton(
               onPressed: () async {
@@ -77,7 +77,7 @@ class _PinLockScreenState extends State<PinLockScreen> {
                   MaterialPageRoute(builder: (context) => const SetupScreen()),
                 );
               },
-              child: const Text('Bevestigen'),
+              child: Text(AppLocalizations.of(context)!.confirm),
             ),
           ],
         );
@@ -118,18 +118,18 @@ class _PinLockScreenState extends State<PinLockScreen> {
         child: Column(
           children: [
             const SizedBox(height: 80),
-            const Text(
-              'Meting',
-              style: TextStyle(
+            Text(
+              AppLocalizations.of(context)!.app_title,
+              style: const TextStyle(
                 fontSize: 36,
                 fontWeight: FontWeight.bold,
                 color: Colors.black,
               ),
             ),
             const SizedBox(height: 8),
-            const Text(
-              'Voer uw pincode in',
-              style: TextStyle(
+            Text(
+              AppLocalizations.of(context)!.pin_set,
+              style: const TextStyle(
                 fontSize: 18,
                 color: Color(0xFF666666),
               ),
@@ -139,9 +139,9 @@ class _PinLockScreenState extends State<PinLockScreen> {
             const SizedBox(height: 16),
             TextButton(
               onPressed: _onForgotPin,
-              child: const Text(
-                'Pincode vergeten',
-                style: TextStyle(
+              child: Text(
+                AppLocalizations.of(context)!.pin_forgot,
+                style: const TextStyle(
                   decoration: TextDecoration.underline,
                   fontSize: 14,
                   color: Color(0xFF1D53BF),
