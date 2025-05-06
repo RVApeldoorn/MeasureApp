@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:measureapp/screens/height_measurement_screen.dart';
 import 'package:measureapp/screens/measurement_result_screen.dart';
 import 'package:measureapp/screens/temperature_measurement_screen.dart';
@@ -17,30 +18,39 @@ class SessionBlock extends StatelessWidget {
     final difference = dueDate.difference(now).inDays;
 
     if (difference <= 0) {
-      return Color(0xFFFF8A80);
+      return const Color(0xFFFF8A80);
     } else if (difference <= 2) {
-      return Color(0xFFFFAB91);
+      return const Color(0xFFFFAB91);
     } else if (difference <= 7) {
-      return Color(0xFFFFCC80);
+      return const Color(0xFFFFCC80);
     } else {
-      return Color(0xFF1D53BF);
+      return const Color(0xFF1D53BF);
     }
   }
 
   @override
   Widget build(BuildContext context) {
+    final localizations = AppLocalizations.of(context)!;
+
     List<dynamic> requests = session['requests'] ?? [];
-    int filledCount = requests.where((r) => (r['measurementValue'] as List?)?.isNotEmpty == true).length;
+    int filledCount =
+        requests
+            .where((r) => (r['measurementValue'] as List?)?.isNotEmpty == true)
+            .length;
     bool allFilled = session['isCompleted'];
 
     DateTime dueDate = DateTime.tryParse(session['dueDate'] ?? '') ?? DateTime.now();
     Color dueDateColor = getDueDateColor(dueDate);
 
-    String title = 'Meetverzoek ${formatMonth(dueDate)}';
+    String title = localizations.session_title(formatMonth(context, dueDate));
+    String status = localizations.session_fulfilled(
+      filledCount.toString(),
+      requests.length.toString(),
+    );
 
     return Card(
       elevation: 0,
-      color: Color(0xFFE8EDF8),
+      color: const Color(0xFFE8EDF8),
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
       child: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -52,15 +62,15 @@ class SessionBlock extends StatelessWidget {
               children: [
                 Text(
                   title,
-                  style: TextStyle(
+                  style: const TextStyle(
                     fontSize: 20,
                     fontWeight: FontWeight.bold,
                     color: Colors.black87,
                   ),
                 ),
                 Text(
-                  '$filledCount/${requests.length} voldaan',
-                  style: TextStyle(
+                  status,
+                  style: const TextStyle(
                     fontSize: 14,
                     color: Colors.black54,
                   ),
@@ -72,17 +82,17 @@ class SessionBlock extends StatelessWidget {
                 padding: const EdgeInsets.only(top: 4.0),
                 child: RichText(
                   text: TextSpan(
-                    style: TextStyle(fontSize: 16),
+                    style: const TextStyle(fontSize: 16),
                     children: [
                       TextSpan(
-                        text: 'Deadline: ',
-                        style: TextStyle(
+                        text: localizations.session_deadline_label,
+                        style: const TextStyle(
                           color: Colors.black54,
                           fontWeight: FontWeight.w500,
                         ),
                       ),
                       TextSpan(
-                        text: formatDateManual(dueDate),
+                        text: formatDateManual(context, dueDate),
                         style: TextStyle(
                           color: dueDateColor,
                           fontStyle: FontStyle.italic,
@@ -92,13 +102,13 @@ class SessionBlock extends StatelessWidget {
                   ),
                 ),
               ),
-            SizedBox(height: 16),
+            const SizedBox(height: 16),
             ...requests.map((request) {
               String measurementName = request['measurementType']['name'];
               bool isFilled = (request['measurementValue'] as List?)?.isNotEmpty == true;
 
               return MeasurementRequest(
-                title: getTranslatedMeasurementName(measurementName),
+                title: getTranslatedMeasurementName(context, measurementName),
                 isFilled: isFilled,
                 onPressed: () {
                   if (isFilled) {
@@ -148,13 +158,17 @@ class SessionBlock extends StatelessWidget {
                         break;
                       default:
                         ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(content: Text('Metingstype niet geïmplementeerd')),
+                          SnackBar(
+                            content: Text(
+                              localizations.session_unimplemented_type,
+                            ),
+                          ),
                         );
                     }
                   }
                 },
               );
-            }).toList(),
+            }),
           ],
         ),
       ),

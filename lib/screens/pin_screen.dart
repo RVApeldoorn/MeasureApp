@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:measureapp/utils/secure_storage.dart';
 import 'package:measureapp/screens/pin_lock_screen.dart';
 import 'package:measureapp/widgets/numpad_widget.dart';
@@ -43,8 +43,10 @@ class _PinScreenState extends State<PinScreen> {
   void _onDeletePress() {
     if (_showConfirmField && _confirmPinController.text.isNotEmpty) {
       setState(() {
-        _confirmPinController.text = _confirmPinController.text
-            .substring(0, _confirmPinController.text.length - 1);
+        _confirmPinController.text = _confirmPinController.text.substring(
+          0,
+          _confirmPinController.text.length - 1,
+        );
       });
     } else if (!_showConfirmField && _pinController.text.isNotEmpty) {
       setState(() {
@@ -65,11 +67,10 @@ class _PinScreenState extends State<PinScreen> {
         );
       } else {
         await Future.delayed(const Duration(milliseconds: 200));
-        
         if (!mounted) return;
 
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('PIN-codes komen niet overeen')),
+          SnackBar(content: Text(AppLocalizations.of(context)!.pin_error)),
         );
         setState(() {
           _pinController.clear();
@@ -99,19 +100,19 @@ class _PinScreenState extends State<PinScreen> {
     );
   }
 
-
-
   @override
   Widget build(BuildContext context) {
+    final loc = AppLocalizations.of(context)!;
+
     return Scaffold(
       backgroundColor: Colors.white,
       body: SafeArea(
         child: Column(
           children: [
             const SizedBox(height: 80),
-            const Text(
-              'Meting',
-              style: TextStyle(
+            Text(
+              loc.app_title,
+              style: const TextStyle(
                 fontSize: 36,
                 fontWeight: FontWeight.bold,
                 color: Colors.black,
@@ -119,13 +120,13 @@ class _PinScreenState extends State<PinScreen> {
             ),
             const SizedBox(height: 8),
             Text(
-              _showConfirmField ? 'Bevestig uw PIN-code' : 'Stel uw PIN-code in',
+              _showConfirmField ? loc.pin_confirm : loc.pin_set,
               style: const TextStyle(
                 fontSize: 18,
                 color: Color(0xFF666666),
               ),
             ),
-            const SizedBox(height:32),
+            const SizedBox(height: 32),
             _buildPinDots(_showConfirmField ? _confirmPinController.text : _pinController.text),
             const Spacer(),
             NumpadWidget(
