@@ -101,3 +101,19 @@ To connect to the Health Measurement API running locally, configure the API’s 
 - **Bluetooth Integration**: Supports Bluetooth devices for automated measurement collection (via `flutter_reactive_ble`).
 - **Security**: JWT tokens are securely stored, and the app is protected with a user-defined PIN code.
 - **Localization**: Supports multiple languages using `flutter_localizations` and `intl`.
+
+## Technology Stack
+The MeasureApp uses the following technologies:
+
+### Frontend
+- **Flutter (SDK 3.7.0+)**: Cross-platform framework for building mobile (Android/iOS) and web apps.
+- **Dart**: Programming language for Flutter, handling app logic and UI.
+
+### Key Packages
+- **dio (5.4.0)**: HTTP client for API requests to the Measurement API (e.g., fetching sessions, submitting measurements).
+- **flutter_secure_storage (9.0.0)**: Securely stores JWT tokens and PIN codes locally.
+- **flutter_reactive_ble (5.4.0)**: Connects to Bluetooth devices (e.g., height measurement device), with permissions in `AndroidManifest.xml` and `Info.plist`.
+- **shared_preferences (2.5.3)**: Stores non-sensitive user settings.
+- **flutter_localizations & intl (0.19.0)**: Enables multi-language support.
+- **permission_handler (11.4.0)**: Manages Bluetooth and location permissions.
+- **flutter_svg (2.0.10+1)**: Renders SVG assets for icons/images.
