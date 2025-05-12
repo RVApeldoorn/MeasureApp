@@ -38,6 +38,11 @@
     "month9": "september",
     "month10": "oktober",
     "month11": "november",
-    "month12": "december"      
+    "month12": "december",
+    "measurement": "Meting",
+    "heightMeasurement": "Lengtemeting",
+    "relaxChild": "Laat het kind ontspannen ademhalen.",
+    "step2Elephant": "Blaas zo hard als een Olifant!",
+    "blablabla": "Bla bla bla"
 }
   

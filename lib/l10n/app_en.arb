@@ -38,5 +38,10 @@
   "month9": "September",
   "month10": "October",
   "month11": "November",
-  "month12": "December"
+  "month12": "December",
+  "measurement": "Measurement",
+  "heightMeasurement": "Heightmeasurement",
+  "relaxChild": "Let the child breathe relaxed.",
+  "step2Elephant": "Blow as hard as an Elephant!",
+  "blablabla": "Bla bla bla"
 }
