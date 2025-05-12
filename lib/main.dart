@@ -39,10 +39,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: IntroStepOneScreen(
-        sessionId: 0,
-        requestId: 0,
-      ),
+      home: startScreen,
       localizationsDelegates: const [
         AppLocalizations.delegate,
         GlobalMaterialLocalizations.delegate,

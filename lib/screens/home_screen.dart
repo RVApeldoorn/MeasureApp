@@ -3,9 +3,11 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:measureapp/services/api_service.dart';
 import 'package:measureapp/utils/date_utils.dart';
 import 'package:measureapp/widgets/big_button.dart';
+import 'package:measureapp/widgets/bottom_navigation_bar.dart';
 import 'package:measureapp/widgets/no_sessions_block.dart';
 import 'package:measureapp/widgets/session_block.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:measureapp/widgets/top_bar.dart';
 
 class HomeScreen extends StatefulWidget {
   @override
@@ -49,6 +51,8 @@ class _HomeScreenState extends State<HomeScreen> {
     final t = AppLocalizations.of(context)!;
 
     return Scaffold(
+      appBar: TopBar(title: t.app_title),
+      bottomNavigationBar: const BottomNavBar(),
       body: RefreshIndicator(
         onRefresh: _fetchSessionsData,
         child: _isLoading
