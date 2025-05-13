@@ -1,8 +1,9 @@
 {
     "@@locale": "nl",
     "app_title": "Meting",
-    "pin_set": "Stel uw PIN-code in",
-    "pin_confirm": "Bevestig uw PIN-code",
+    "pin_set": "Stel uw pincode in",
+    "pin_enter": "Voer uw pincode in",
+    "pin_confirm": "Bevestig uw pincode",
     "pin_error": "PIN-codes komen niet overeen",
     "pin_reset_confirm_title": "Bevestiging",
     "pin_reset_confirm_content": "Weet je zeker dat je je PIN wilt resetten? De app zal opnieuw worden ingesteld.",

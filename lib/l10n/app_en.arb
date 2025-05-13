@@ -1,8 +1,9 @@
 {
   "@@locale": "en",
   "app_title": "Measurement",
-  "pin_set": "Set your PIN code",
-  "pin_confirm": "Confirm your PIN code",
+  "pin_set": "Set your pincode",
+  "pin_enter": "Enter your pincode",
+  "pin_confirm": "Confirm your pincode",
   "pin_error": "PIN codes do not match",
   "pin_reset_confirm_title": "Confirmation",
   "pin_reset_confirm_content": "Are you sure you want to reset your PIN? The app will be reset.",

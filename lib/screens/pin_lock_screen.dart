@@ -4,6 +4,7 @@ import 'package:measureapp/utils/secure_storage.dart';
 import 'package:measureapp/screens/home_screen.dart';
 import 'package:measureapp/screens/setup_screen.dart';
 import 'package:measureapp/widgets/numpad_widget.dart';
+import 'package:measureapp/widgets/pin_dots_widget.dart';
 
 class PinLockScreen extends StatefulWidget {
   const PinLockScreen({super.key});
@@ -85,25 +86,6 @@ class _PinLockScreenState extends State<PinLockScreen> {
     );
   }
 
-  Widget _buildPinDots() {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: List.generate(4, (index) {
-        return Container(
-          margin: const EdgeInsets.symmetric(horizontal: 12),
-          width: 50,
-          height: 50,
-          decoration: BoxDecoration(
-            color: index < _pinController.text.length
-                ? const Color(0xFF1D53BF)
-                : const Color(0xFFE6ECF6),
-            borderRadius: BorderRadius.circular(12),
-          ),
-        );
-      }),
-    );
-  }
-
   @override
   void dispose() {
     _pinController.dispose();
@@ -121,21 +103,26 @@ class _PinLockScreenState extends State<PinLockScreen> {
             Text(
               AppLocalizations.of(context)!.app_title,
               style: const TextStyle(
-                fontSize: 36,
+                fontSize: 40,
                 fontWeight: FontWeight.bold,
                 color: Colors.black,
               ),
             ),
             const SizedBox(height: 8),
             Text(
-              AppLocalizations.of(context)!.pin_set,
+              AppLocalizations.of(context)!.pin_enter,
               style: const TextStyle(
-                fontSize: 18,
-                color: Color(0xFF666666),
+                fontSize: 20,
+                color: Color(0xFF2B59BA),
               ),
             ),
-            const SizedBox(height: 32),
-            _buildPinDots(),
+            const SizedBox(height: 45),
+            PinDotsWidget(
+              pinLength: _pinController.text.length,
+              dotSize: 60,
+              spacing: 12,
+              borderRadius: 5,
+            ),
             const SizedBox(height: 16),
             TextButton(
               onPressed: _onForgotPin,
@@ -143,8 +130,8 @@ class _PinLockScreenState extends State<PinLockScreen> {
                 AppLocalizations.of(context)!.pin_forgot,
                 style: const TextStyle(
                   decoration: TextDecoration.underline,
-                  fontSize: 14,
-                  color: Color(0xFF1D53BF),
+                  fontSize: 18,
+                  color: Color(0xFF2B59BA),
                 ),
               ),
             ),
