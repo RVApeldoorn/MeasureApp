@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:measureapp/screens/height_measurement_screen.dart';
 import 'package:measureapp/screens/measurement_result_screen.dart';
-import 'package:measureapp/screens/step_one_measurement_screen.dart';
+import 'package:measureapp/screens/measurement_screens/step_one.dart';
 import 'package:measureapp/screens/temperature_measurement_screen.dart';
 import 'package:measureapp/screens/weight_measurement_screen.dart';
 import 'package:measureapp/utils/date_utils.dart';
@@ -128,7 +127,7 @@ class SessionBlock extends StatelessWidget {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => IntroStepOneScreen(
+                            builder: (context) => StepOne(
                               sessionId: session['sessionId'],
                               requestId: request['requestId'],
                             ),
