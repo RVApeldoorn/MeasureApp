@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:measureapp/screens/relaxing_exercise/exercise_one.dart';
 import 'package:measureapp/screens/setup_screen.dart';
 import 'package:measureapp/screens/pin_screen.dart';
 import 'package:measureapp/screens/pin_lock_screen.dart';
@@ -39,7 +40,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: StepOne(
+      home: ExerciseOne(
         sessionId: 0,
         requestId: 0,
       ),
