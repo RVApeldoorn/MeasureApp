@@ -44,5 +44,9 @@
   "heightMeasurement": "Heightmeasurement",
   "relaxChild": "Let the child breathe relaxed.",
   "step2Elephant": "Blow as hard as an Elephant!",
-  "blablabla": "Bla bla bla"
+  "blablabla": "Bla bla bla",
+  "settings": "Settings",
+  "preferences": "Preferences",
+  "child_mode": "Child mode",
+  "child_mode_helpertext": "Enable child-friendly exercises during measurement"
 }

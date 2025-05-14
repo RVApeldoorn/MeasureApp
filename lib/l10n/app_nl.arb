@@ -44,6 +44,10 @@
     "heightMeasurement": "Lengtemeting",
     "relaxChild": "Laat het kind ontspannen ademhalen.",
     "step2Elephant": "Blaas zo hard als een Olifant!",
-    "blablabla": "Bla bla bla"
+    "blablabla": "Bla bla bla",
+    "settings": "Instellingen",
+    "preferences": "Voorkeuren",
+    "child_mode": "Kindermodus",
+    "child_mode_helpertext": "Schakel kindvriendelijke oefeningen tijdens meting in"
 }
   
