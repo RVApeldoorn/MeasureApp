@@ -4,7 +4,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:measureapp/screens/setup_screen.dart';
 import 'package:measureapp/screens/pin_screen.dart';
 import 'package:measureapp/screens/pin_lock_screen.dart';
-import 'package:measureapp/screens/step_one_measurement_screen.dart';
+import 'package:measureapp/screens/measurement_screens/step_one.dart';
 import 'package:measureapp/utils/secure_storage.dart';
 
 void main() async {
@@ -39,7 +39,10 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: startScreen,
+      home: StepOne(
+        sessionId: 0,
+        requestId: 0,
+      ),
       localizationsDelegates: const [
         AppLocalizations.delegate,
         GlobalMaterialLocalizations.delegate,
