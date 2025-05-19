@@ -49,4 +49,11 @@
   "preferences": "Preferences",
   "child_mode": "Child mode",
   "child_mode_helpertext": "Enable child-friendly exercises during measurement"
+  "step1": "Let your child stand againt the empty wall.",
+  "step2": "Have your child stand with their feet and back against the wall.",
+  "step3": "Check to see if your child's ears and eyes are aligned.",
+  "step4": "Hang up the measuring device and put the cap on your child.",
+  "step5": "Check that your child is standing correctly.",
+  "exercise": "Relaxing exercise",
+  "exerciseFollow": "Doe de oefening na"
 }
