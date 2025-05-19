@@ -2,11 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:measureapp/screens/measurement_result_screen.dart';
 import 'package:measureapp/screens/measurement_screens/step_one.dart';
+import 'package:measureapp/screens/relaxing_exercise/exercise_one.dart';
 import 'package:measureapp/screens/temperature_measurement_screen.dart';
 import 'package:measureapp/screens/weight_measurement_screen.dart';
 import 'package:measureapp/utils/date_utils.dart';
 import 'package:measureapp/utils/measurement_utils.dart';
 import 'package:measureapp/widgets/measurement_request.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class SessionBlock extends StatelessWidget {
   final dynamic session;
@@ -126,13 +128,32 @@ class SessionBlock extends StatelessWidget {
                       case 'height':
                         Navigator.push(
                           context,
-                          MaterialPageRoute(
-                            builder: (context) => StepOne(
-                              sessionId: session['sessionId'],
-                              requestId: request['requestId'],
-                            ),
-                          ),
-                        );
+                            MaterialPageRoute(
+                              builder: (context) {
+                                return FutureBuilder<SharedPreferences>(
+                                  future: SharedPreferences.getInstance(),
+                                  builder: (context, snapshot) {
+                                    final prefs = snapshot.data;
+                                    final isChildMode = prefs?.getBool('childMode') == true;
+                                    if (!snapshot.hasData) {
+                                      return const Center(child: CircularProgressIndicator());
+                                    }
+                                    if (isChildMode) {
+                                      return ExerciseOne(
+                                        sessionId: session['sessionId'],
+                                        requestId: request['requestId'],
+                                      );
+                                    } else {
+                                      return StepOne(
+                                        sessionId: session['sessionId'],
+                                        requestId: request['requestId'],
+                                      );
+                                    }
+                                  },
+                                );
+                              },
+                            )
+                          );
                         break;
                       case 'weight':
                         Navigator.push(
