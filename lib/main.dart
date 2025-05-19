@@ -4,8 +4,12 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:measureapp/screens/setup_screen.dart';
 import 'package:measureapp/screens/pin_screen.dart';
 import 'package:measureapp/screens/pin_lock_screen.dart';
-import 'package:measureapp/screens/step_one_measurement_screen.dart';
+import 'package:measureapp/screens/step_two_measurement_screen.dart';
+import 'package:measureapp/screens/connect_screen.dart';
 import 'package:measureapp/utils/secure_storage.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:measureapp/bloc/ble_bloc.dart';
+import 'package:measureapp/services/ble_service.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -26,21 +30,23 @@ class MyApp extends StatelessWidget {
     Widget startScreen;
 
     if (token == null) {
-      startScreen = const SetupScreen();
+      startScreen = ConnectScreen();
     } else if (pin == null) {
       startScreen = const PinScreen();
     } else {
       startScreen = PinLockScreen();
     }
 
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'Measure App',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
-      home: startScreen,
-      localizationsDelegates: const [
+    return BlocProvider(
+      create: (_) => BleBloc(BleService()),
+      child: MaterialApp(
+        debugShowCheckedModeBanner: false,
+        title: 'Measure App',
+        theme: ThemeData(
+          primarySwatch: Colors.blue,
+        ),
+        home: startScreen,
+        localizationsDelegates: const [
         AppLocalizations.delegate,
         GlobalMaterialLocalizations.delegate,
         GlobalWidgetsLocalizations.delegate,
@@ -52,6 +58,7 @@ class MyApp extends StatelessWidget {
         // Locale('it'),
         // Locale('zh'),
       ],
+      ),
     );
   }
 }

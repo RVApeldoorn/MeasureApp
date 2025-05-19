@@ -4,6 +4,7 @@ import 'package:measureapp/screens/home_screen.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:measureapp/screens/step_one_measurement_screen.dart';
 import 'package:measureapp/widgets/measurement_step_screen.dart';
+import 'distance_screen.dart';
 
 class IntroStepThreeScreen extends StatelessWidget {
   @override
@@ -18,7 +19,7 @@ class IntroStepThreeScreen extends StatelessWidget {
       totalSteps: 4,
       onNext: () => Navigator.push(
         context,
-        MaterialPageRoute(builder: (_) => HomeScreen()),
+        MaterialPageRoute(builder: (_) => DistanceScreen()),
       ),
     );
   }
