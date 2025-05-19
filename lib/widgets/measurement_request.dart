@@ -41,7 +41,7 @@ class MeasurementRequest extends StatelessWidget {
                 ),
               ),
               Icon(
-                isFilled ? Icons.check : Icons.arrow_forward,
+                isFilled ? Icons.check : Icons.add,
                 color: Color(0xFF1D53BF),
                 size: 32,
               ),

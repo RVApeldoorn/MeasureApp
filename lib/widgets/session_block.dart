@@ -50,7 +50,7 @@ class SessionBlock extends StatelessWidget {
 
     return Card(
       elevation: 0,
-      color: const Color(0xFFE8EDF8),
+      color: const Color(0xFFE7EDF9),
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
       child: Padding(
         padding: const EdgeInsets.all(16.0),

@@ -51,6 +51,7 @@ class _HomeScreenState extends State<HomeScreen> {
     final t = AppLocalizations.of(context)!;
 
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: TopBar(title: t.app_title),
       bottomNavigationBar: const BottomNavBar(),
       body: RefreshIndicator(
@@ -95,13 +96,13 @@ class _HomeScreenState extends State<HomeScreen> {
                             ],
                           );
                       }),
+                    SizedBox(height: 10),
                       Row(
                         children: [
                           Expanded(
                             child: BigButton(
                               title: t.growth_safari,
-                              iconWidget: SvgPicture.asset(
-                                'assets/icons/lion.svg',
+                            iconWidget: Image.asset('assets/images/yoga.png',
                               ),
                               onPressed: () {},
                             ),

@@ -55,8 +55,8 @@ class BigButton extends StatelessWidget {
                 SizedBox(height: 12),
                 Center(
                   child: SizedBox(
-                    width: 60,
-                    height: 60,
+                    width: 80,
+                    height: 80,
                     child: iconWidget,
                   ),
                 ),
