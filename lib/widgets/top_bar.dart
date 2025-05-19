@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:measureapp/screens/settings_screen.dart';
 
 class TopBar extends StatelessWidget implements PreferredSizeWidget {
   final String title;
@@ -45,7 +46,12 @@ class TopBar extends StatelessWidget implements PreferredSizeWidget {
                   width: 32,
                   height: 32,
                 ),
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(builder: (context) => SettingsScreen()),
+                  );
+                },
               ),
             ),
           ],

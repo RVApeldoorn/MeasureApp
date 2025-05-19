@@ -8,6 +8,7 @@ import 'package:measureapp/widgets/no_sessions_block.dart';
 import 'package:measureapp/widgets/session_block.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:measureapp/widgets/top_bar.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class HomeScreen extends StatefulWidget {
   @override
@@ -21,11 +22,13 @@ class _HomeScreenState extends State<HomeScreen> {
   bool _isLoading = true;
   String _errorMessage = '';
   bool _noSessionsFound = false;
+  bool _isChildModeEnabled = false;
 
   @override
   void initState() {
     super.initState();
     _fetchSessionsData();
+    _loadChildModeSetting();
   }
 
   Future<void> _fetchSessionsData() async {
@@ -46,6 +49,14 @@ class _HomeScreenState extends State<HomeScreen> {
     }
   }
 
+  Future<void> _loadChildModeSetting() async {
+    final prefs = await SharedPreferences.getInstance();
+    setState(() {
+      _isChildModeEnabled = prefs.getBool('childMode') ?? false;
+      _isLoading = false;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     final t = AppLocalizations.of(context)!;
@@ -53,19 +64,21 @@ class _HomeScreenState extends State<HomeScreen> {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: TopBar(title: t.app_title),
-      bottomNavigationBar: const BottomNavBar(),
+      bottomNavigationBar: BottomNavBar(
+        isChildModeEnabled: _isChildModeEnabled,
+      ),
       body: RefreshIndicator(
         onRefresh: _fetchSessionsData,
         child: _isLoading
             ? Center(child: CircularProgressIndicator())
             : _errorMessage.isNotEmpty
                 ? ListView(
-                    physics: const AlwaysScrollableScrollPhysics(),
+                  physics: AlwaysScrollableScrollPhysics(),
                     children: [Center(child: Text('error: $_errorMessage'))],
                   )
                 : ListView(
-                    physics: const AlwaysScrollableScrollPhysics(),
-                    padding: const EdgeInsets.all(16.0),
+                  physics: AlwaysScrollableScrollPhysics(),
+                  padding: EdgeInsets.all(16.0),
                     children: [
                       Text(
                         getGreeting(context),
@@ -84,30 +97,28 @@ class _HomeScreenState extends State<HomeScreen> {
                       ),
                       ),
                       SizedBox(height: 10),
-                      if (_noSessionsFound)
-                        NoSessionsBlock()
-                      else
-                        ..._sessions.asMap().entries.map((entry) {
-                          var session = entry.value;
-                          return Column(
-                            children: [
-                              SessionBlock(session: session),
-                              SizedBox(height: 4),
-                            ],
-                          );
+                    if (_noSessionsFound) NoSessionsBlock(),
+                    ..._sessions.asMap().entries.map((entry) {
+                      var session = entry.value;
+                      return Column(
+                        children: [
+                          SessionBlock(session: session),
+                          SizedBox(height: 4),
+                        ],
+                      );
                       }),
                     SizedBox(height: 10),
                       Row(
                         children: [
+                        if (_isChildModeEnabled)
                           Expanded(
                             child: BigButton(
                               title: t.growth_safari,
-                            iconWidget: Image.asset('assets/images/yoga.png',
-                              ),
+                              iconWidget: Image.asset('assets/images/yoga.png'),
                               onPressed: () {},
                             ),
                           ),
-                          SizedBox(width: 8),
+                        if (_isChildModeEnabled) SizedBox(width: 8),
                           Expanded(
                             child: BigButton(
                               title: t.growth_curve,
