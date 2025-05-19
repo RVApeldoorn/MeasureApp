@@ -7,7 +7,7 @@ class AuthService {
 
     try {
       final response = await dio.post(
-        'http://x.x.x.x:5005/api/auth/setup',
+        'http://localhost:5005/api/auth/setup',
         data: {'setupCode': setupCode},
         options: Options(
           headers: {'Content-Type': 'application/json'},

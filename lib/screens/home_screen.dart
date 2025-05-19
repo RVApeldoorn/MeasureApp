@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:measureapp/screens/relaxing_exercise/exercise_one.dart';
 import 'package:measureapp/services/api_service.dart';
 import 'package:measureapp/utils/date_utils.dart';
 import 'package:measureapp/widgets/big_button.dart';
@@ -115,7 +116,14 @@ class _HomeScreenState extends State<HomeScreen> {
                             child: BigButton(
                               title: t.growth_safari,
                               iconWidget: Image.asset('assets/images/yoga.png'),
-                              onPressed: () {},
+                              onPressed: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => ExerciseOne(sessionId: 0, requestId: 0),
+                                  ),
+                                );
+                              },
                             ),
                           ),
                         if (_isChildModeEnabled) SizedBox(width: 8),

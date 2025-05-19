@@ -14,7 +14,7 @@ class ApiService {
 
       _dio.options.headers['Authorization'] = 'Bearer $token';
 
-      final response = await _dio.get('http://x.x.x.x:5005/api/patient/sessions');
+      final response = await _dio.get('http://localhost:5005/api/patient/sessions');
 
       if (response.statusCode == 200) {
         return response.data;

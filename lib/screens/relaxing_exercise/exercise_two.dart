@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:measureapp/screens/home_screen.dart';
 import 'package:measureapp/screens/measurement_screens/step_one.dart';
 import 'package:measureapp/widgets/measurement_step_screen.dart';
 
@@ -21,7 +22,9 @@ class ExerciseTwo extends StatelessWidget {
       totalSteps: 2,
       onNext: () => Navigator.push(
         context,
-        MaterialPageRoute(builder: (_) => StepOne(sessionId: sessionId, requestId: requestId)),
+        requestId == 0
+            ? MaterialPageRoute(builder: (_) => HomeScreen())
+            : MaterialPageRoute(builder: (_) => StepOne(sessionId: sessionId, requestId: requestId)),
       ),
     );
   }

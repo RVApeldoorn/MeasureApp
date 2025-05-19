@@ -41,9 +41,9 @@ class MeasurementStepScreen extends StatelessWidget {
                 color: Colors.white,
                 borderRadius: BorderRadius.circular(12),
               ),
-              padding: const EdgeInsets.symmetric(vertical: 48),
+              // padding: const EdgeInsets.symmetric(vertical: 48),
               child: Center(
-                child: Image.asset(imagePath, width: 339, height: 337),
+                child: Image.asset(imagePath),
               ),
             ),
             const SizedBox(height: 24),
@@ -52,11 +52,11 @@ class MeasurementStepScreen extends StatelessWidget {
                 children: [
                   TextSpan(
                     text: 'Stap ${stepIndex + 1}\n',
-                    style: const TextStyle(fontWeight: FontWeight.bold, color: Colors.blue),
+                    style: const TextStyle(fontWeight: FontWeight.bold, color: Colors.blue, fontSize: 15),
                   ),
                   TextSpan(
                     text: description,
-                    style: const TextStyle(fontWeight: FontWeight.bold),
+                    style: const TextStyle(fontWeight: FontWeight.bold, color: Colors.black, fontSize: 15),
                   ),
                 ],
               ),
@@ -71,7 +71,7 @@ class MeasurementStepScreen extends StatelessWidget {
                   height: 8,
                   decoration: BoxDecoration(
                     shape: BoxShape.circle,
-                    color: index == stepIndex ? Colors.blue : Colors.grey[300],
+                    color: index == stepIndex ? Color(0xFF2B59BA) : Colors.grey[300],
                   ),
                 );
               }),
@@ -82,7 +82,7 @@ class MeasurementStepScreen extends StatelessWidget {
               child: ElevatedButton(
                 onPressed: onNext,
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: const Color(0xFF2A63D4),
+                  backgroundColor: const Color(0xFF2B59BA),
                   minimumSize: const Size.fromHeight(48),
                   shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
                 ),

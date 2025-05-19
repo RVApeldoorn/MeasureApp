@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:measureapp/screens/home_screen.dart';
+import 'package:measureapp/screens/relaxing_exercise/exercise_one.dart';
 
 class BottomNavBar extends StatelessWidget {
   final int currentIndex;
@@ -58,12 +59,20 @@ class BottomNavBar extends StatelessWidget {
             ),
             label: 'Home',
           ),
-          if (isChildModeEnabled)
+            if (isChildModeEnabled)
             BottomNavigationBarItem(
-              icon: Image.asset(
+              icon: GestureDetector(
+              onTap: () {
+                Navigator.push(context, MaterialPageRoute(builder: (_) => ExerciseOne(
+                  sessionId: 0,
+                  requestId: 0,
+                )));
+              },
+              child: Image.asset(
                 'assets/images/yoga.png',
                 width: 32,
                 height: 32,
+              ),
               ),
               label: 'Oefeningen',
             ),
