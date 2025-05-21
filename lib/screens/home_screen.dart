@@ -9,6 +9,8 @@ import 'package:measureapp/widgets/no_sessions_block.dart';
 import 'package:measureapp/widgets/session_block.dart';
 import 'package:measureapp/widgets/top_bar.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:measureapp/screens/growth_curve_screen.dart';
+
 
 class HomeScreen extends StatefulWidget {
   @override
@@ -66,6 +68,8 @@ class _HomeScreenState extends State<HomeScreen> {
       appBar: TopBar(title: t.app_title),
       bottomNavigationBar: BottomNavBar(
         isChildModeEnabled: _isChildModeEnabled,
+        isOnHomeScreen: true,
+        currentIndex: 1,
       ),
       body: RefreshIndicator(
         onRefresh: _fetchSessionsData,
@@ -134,7 +138,14 @@ class _HomeScreenState extends State<HomeScreen> {
                               iconWidget: Image.asset(
                                 'assets/icons/ruler.png',
                               ),
-                              onPressed: () {},
+                              onPressed: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => GrowthCurveScreen(),
+                                  ),
+                                );
+                              },
                             ),
                           ),
                         ],

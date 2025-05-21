@@ -17,6 +17,7 @@
     "invalid_setup_code": "Ongeldig setup code!",
     "growth_safari": "Groeisafari",
     "growth_curve": "Groeicurve",
+  "growth_curve_description": "Dit is een overzicht van uw eerdere lengtemetingen.",
     "no_sessions_message": "Geen openstaande opdrachten 🎉",
     "session_title": "Meetverzoek {month}",
     "session_fulfilled": "{filledCount}/{totalCount} voldaan",
@@ -57,6 +58,10 @@
     "exercises": "Oefeningen",
     "insight": "Inzicht",
     "exercise": "Rustige oefening",
-    "exerciseFollow": "Doe de oefening na"
+    "exerciseFollow": "Doe de oefening na",
+    "step": "Stap",
+    "next": "Volgende",
+    "growth": "Jouw groei",
+    "home": "Home"
 }
   
