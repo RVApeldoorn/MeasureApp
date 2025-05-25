@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:measureapp/screens/home_screen.dart';
 import 'package:measureapp/screens/relaxing_exercise/exercise_one.dart';
 
@@ -44,8 +43,8 @@ class BottomNavBar extends StatelessWidget {
         },
         items: [
           BottomNavigationBarItem(
-            icon: SvgPicture.asset(
-              'assets/icons/loop.svg',
+            icon: Image.asset(
+              'assets/icons/ruler.png',
               width: 32,
               height: 32,
             ),
@@ -53,7 +52,7 @@ class BottomNavBar extends StatelessWidget {
           ),
           BottomNavigationBarItem(
             icon: Image.asset(
-              'assets/images/home.png',
+              'assets/icons/home.png',
               width: 32,
               height: 32,
             ),
@@ -69,7 +68,7 @@ class BottomNavBar extends StatelessWidget {
                 )));
               },
               child: Image.asset(
-                'assets/images/yoga.png',
+                'assets/icons/yoga.png',
                 width: 32,
                 height: 32,
               ),

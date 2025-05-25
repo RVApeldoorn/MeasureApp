@@ -2,11 +2,13 @@ import 'package:flutter/material.dart';
 
 class BigButton extends StatelessWidget {
   final String title;
+  final String subtitle;
   final Widget iconWidget;
   final VoidCallback onPressed;
 
   const BigButton({
     required this.title,
+    required this.subtitle,
     required this.iconWidget,
     required this.onPressed,
   });
@@ -44,7 +46,7 @@ class BigButton extends StatelessWidget {
                   textAlign: TextAlign.start,
                 ),
                 Text(
-                  title,
+                  subtitle,
                   style: TextStyle(
                     fontSize: 20,
                     fontWeight: FontWeight.bold,

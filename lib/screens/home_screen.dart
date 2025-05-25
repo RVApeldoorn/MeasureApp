@@ -7,7 +7,6 @@ import 'package:measureapp/widgets/big_button.dart';
 import 'package:measureapp/widgets/bottom_navigation_bar.dart';
 import 'package:measureapp/widgets/no_sessions_block.dart';
 import 'package:measureapp/widgets/session_block.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:measureapp/widgets/top_bar.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -114,8 +113,9 @@ class _HomeScreenState extends State<HomeScreen> {
                         if (_isChildModeEnabled)
                           Expanded(
                             child: BigButton(
-                              title: t.growth_safari,
-                              iconWidget: Image.asset('assets/images/yoga.png'),
+                              title: t.exercises,
+                              subtitle: t.exercise,
+                              iconWidget: Image.asset('assets/icons/yoga.png'),
                               onPressed: () {
                                 Navigator.push(
                                   context,
@@ -129,9 +129,10 @@ class _HomeScreenState extends State<HomeScreen> {
                         if (_isChildModeEnabled) SizedBox(width: 8),
                           Expanded(
                             child: BigButton(
-                              title: t.growth_curve,
-                              iconWidget: SvgPicture.asset(
-                                'assets/icons/loop.svg',
+                              title: t.insight,
+                              subtitle: t.growth_curve,
+                              iconWidget: Image.asset(
+                                'assets/icons/ruler.png',
                               ),
                               onPressed: () {},
                             ),
