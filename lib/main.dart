@@ -5,20 +5,22 @@ import 'package:measureapp/screens/setup_screen.dart';
 import 'package:measureapp/screens/pin_screen.dart';
 import 'package:measureapp/screens/pin_lock_screen.dart';
 import 'package:measureapp/utils/secure_storage.dart';
+import 'package:measureapp/state/locale_provider.dart';
+import 'package:provider/provider.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   String? token = await SecureStorage.getToken();
   String? pin = await SecureStorage.getPin();
 
-  runApp(MyApp(token: token, pin: pin));
+  runApp(HomeScreen(token: token, pin: pin));
 }
 
-class MyApp extends StatelessWidget {
+class HomeScreen extends StatelessWidget {
   final String? token;
   final String? pin;
 
-  const MyApp({super.key, this.token, this.pin});
+  const HomeScreen({super.key, this.token, this.pin});
 
   @override
   Widget build(BuildContext context) {
@@ -32,25 +34,33 @@ class MyApp extends StatelessWidget {
       startScreen = PinLockScreen();
     }
 
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'Measure App',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
+    return ChangeNotifierProvider(
+      create: (_) => LocaleProvider(),
+      child: Consumer<LocaleProvider>(
+        builder: (context, localeProvider, _) {
+          return MaterialApp(
+            debugShowCheckedModeBanner: false,
+            title: 'Measure App',
+            theme: ThemeData(
+              primarySwatch: Colors.blue,
+            ),
+            home: startScreen,
+            locale: localeProvider.locale,
+            localizationsDelegates: const [
+              AppLocalizations.delegate,
+              GlobalMaterialLocalizations.delegate,
+              GlobalWidgetsLocalizations.delegate,
+              GlobalCupertinoLocalizations.delegate,
+            ],
+            supportedLocales: const [
+              Locale('en'),
+              Locale('nl'),
+              Locale('it'),
+              Locale('zh'),
+            ],
+          );
+        },
       ),
-      home: startScreen,
-      localizationsDelegates: const [
-        AppLocalizations.delegate,
-        GlobalMaterialLocalizations.delegate,
-        GlobalWidgetsLocalizations.delegate,
-        GlobalCupertinoLocalizations.delegate,
-      ],
-      supportedLocales: const [
-        // Locale('en'),
-        Locale('nl'),
-        // Locale('it'),
-        // Locale('zh'),
-      ],
     );
   }
 }
