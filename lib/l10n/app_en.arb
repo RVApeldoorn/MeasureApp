@@ -17,6 +17,7 @@
   "invalid_setup_code": "Invalid setup code!",
   "growth_safari": "Growth Safari",
   "growth_curve": "Growth Curve",
+  "growth_curve_description": "This is an overview of your past height measurements.",
   "no_sessions_message": "No outstanding tasks 🎉",
   "session_title": "Request {month}",
   "session_fulfilled": "{filledCount}/{totalCount} fulfilled",
@@ -54,8 +55,12 @@
   "step3": "Check to see if your child's ears and eyes are aligned.",
   "step4": "Hang up the measuring device and put the cap on your child.",
   "step5": "Check that your child is standing correctly.",
-  "exercises": "Oefeningen",
-  "insight": "Inzicht",
+  "exercises": "Exercises",
+  "insight": "Insight",
   "exercise": "Relaxed exercise",
-  "exerciseFollow": "Doe de oefening na"
+  "exerciseFollow": "Repeat the exercise",
+  "step": "Step",
+  "next": "Next",
+  "growth": "Your growth",
+  "home": "Home"
 }

@@ -1,19 +1,24 @@
 import 'package:flutter/material.dart';
+import 'package:measureapp/screens/growth_curve_screen.dart';
 import 'package:measureapp/screens/home_screen.dart';
 import 'package:measureapp/screens/relaxing_exercise/exercise_one.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class BottomNavBar extends StatelessWidget {
   final int currentIndex;
   final bool isChildModeEnabled;
+  final bool isOnHomeScreen;
 
   const BottomNavBar({
     this.currentIndex = 1,
     this.isChildModeEnabled = false,
+    this.isOnHomeScreen = true,
     super.key,
   });
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     return Container(
       height: 100,
       decoration: BoxDecoration(
@@ -23,60 +28,90 @@ class BottomNavBar extends StatelessWidget {
             color: Colors.black.withOpacity(0.1),
             spreadRadius: 0,
             blurRadius: 8,
-            offset: Offset(0, -4),
+            offset: const Offset(0, -4),
           ),
         ],
       ),
-      child: BottomNavigationBar(
-        currentIndex: currentIndex,
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-        selectedLabelStyle: TextStyle(fontSize: 12, color: Colors.black),
-        unselectedLabelStyle: TextStyle(fontSize: 12, color: Colors.black),
-        onTap: (index) {
-          if (index == 1) {
-            Navigator.pushReplacement(
-              context,
-              MaterialPageRoute(builder: (context) => HomeScreen()),
-            );
-          }
-        },
-        items: [
-          BottomNavigationBarItem(
-            icon: Image.asset(
-              'assets/icons/ruler.png',
-              width: 32,
-              height: 32,
-            ),
-            label: 'Jouw groei',
-          ),
-          BottomNavigationBarItem(
-            icon: Image.asset(
-              'assets/icons/home.png',
-              width: 32,
-              height: 32,
-            ),
-            label: 'Home',
-          ),
-            if (isChildModeEnabled)
-            BottomNavigationBarItem(
-              icon: GestureDetector(
-              onTap: () {
-                Navigator.push(context, MaterialPageRoute(builder: (_) => ExerciseOne(
-                  sessionId: 0,
-                  requestId: 0,
-                )));
+      child: isOnHomeScreen
+          ? BottomNavigationBar(
+              currentIndex: currentIndex,
+              backgroundColor: Colors.transparent,
+              elevation: 0,
+              selectedLabelStyle: const TextStyle(fontSize: 12, color: Colors.black),
+              unselectedLabelStyle: const TextStyle(fontSize: 12, color: Colors.black),
+              onTap: (index) {
+                if (index == 1) {
+                  Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(builder: (context) => HomeScreen()),
+                  );
+                } else if (isChildModeEnabled && index == 2) {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (_) => ExerciseOne(
+                        sessionId: 0,
+                        requestId: 0,
+                      ),
+                    ),
+                  );
+                } else if (index == 0) {
+                  Navigator.push(context, MaterialPageRoute(builder: (_) => GrowthCurveScreen()));
+                }
               },
-              child: Image.asset(
-                'assets/icons/yoga.png',
-                width: 32,
-                height: 32,
+              items: [
+                BottomNavigationBarItem(
+                  icon: Image.asset(
+                    'assets/icons/ruler.png',
+                    width: 32,
+                    height: 32,
+                  ),
+                  label: l10n.growth,
+                ),
+                BottomNavigationBarItem(
+                  icon: Image.asset(
+                    'assets/icons/home.png',
+                    width: 32,
+                    height: 32,
+                  ),
+                  label: l10n.home,
+                ),
+                if (isChildModeEnabled)
+                  BottomNavigationBarItem(
+                    icon: Image.asset(
+                      'assets/icons/yoga.png',
+                      width: 32,
+                      height: 32,
+                    ),
+                    label: l10n.exercises,
+                  ),
+              ],
+            )
+          : Center(
+              child: GestureDetector(
+                onTap: () {
+                  Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(builder: (context) => HomeScreen()),
+                  );
+                },
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Image.asset(
+                      'assets/icons/home.png',
+                      width: 32,
+                      height: 32,
+                    ),
+                    const SizedBox(height: 4),
+                    Text(
+                      l10n.home,
+                      style: TextStyle(fontSize: 12, color: Colors.black),
+                    ),
+                  ],
+                ),
               ),
-              ),
-              label: 'Oefeningen',
             ),
-        ],
-      ),
     );
   }
 }

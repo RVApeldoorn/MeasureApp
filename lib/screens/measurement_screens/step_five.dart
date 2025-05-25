@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:measureapp/screens/home_screen.dart';
-import 'package:measureapp/widgets/measurement_step_screen.dart';
+import 'package:measureapp/widgets/generic_step_screen.dart';
 
 class StepFive extends StatelessWidget {
   final int sessionId;
@@ -12,7 +12,7 @@ class StepFive extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
-    return MeasurementStepScreen(
+    return GenericStepScreen(
       title: l10n.measurement,
       imagePath: 'assets/images/instructions/step5.jpg',
       stepTitle: l10n.heightMeasurement,
