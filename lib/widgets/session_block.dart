@@ -19,12 +19,8 @@ class SessionBlock extends StatelessWidget {
     final now = DateTime.now();
     final difference = dueDate.difference(now).inDays;
 
-    if (difference <= 0) {
-      return const Color(0xFFFF8A80);
-    } else if (difference <= 2) {
-      return const Color(0xFFFFAB91);
-    } else if (difference <= 7) {
-      return const Color(0xFFFFCC80);
+    if (difference <= 7) {
+      return const Color.fromARGB(255, 255, 153, 0);
     } else {
       return const Color(0xFF1D53BF);
     }
