@@ -16,7 +16,7 @@ class ExerciseTwo extends StatelessWidget {
     return GenericStepScreen(
       title: l10n.measurement,
       imagePath: 'assets/images/relaxingExercise/step2.jpg',
-      stepTitle: l10n.heightMeasurement,
+      stepTitle: l10n.exercise,
       description: l10n.exerciseFollow,
       stepIndex: 1,
       totalSteps: 2,
