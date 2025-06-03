@@ -5,15 +5,20 @@ class MeasurementRequest extends StatelessWidget {
   final bool isFilled;
   final VoidCallback? onPressed;
 
-  const MeasurementRequest({required this.title, required this.isFilled, this.onPressed});
+  const MeasurementRequest({
+    Key? key,
+    required this.title,
+    required this.isFilled,
+    this.onPressed,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 4.0),
-      child: ElevatedButton(
+      padding: const EdgeInsets.symmetric(vertical: 2.0),
+      child: TextButton(
         onPressed: onPressed,
-        style: ElevatedButton.styleFrom(
+        style: TextButton.styleFrom(
           backgroundColor: isFilled ? Colors.green[100] : Colors.white,
           foregroundColor: Colors.blue,
           shape: RoundedRectangleBorder(
@@ -32,7 +37,7 @@ class MeasurementRequest extends StatelessWidget {
                   alignment: Alignment.centerLeft,
                   child: Text(
                     title,
-                    style: TextStyle(
+                    style: const TextStyle(
                       color: Colors.black,
                       fontSize: 16,
                       fontWeight: FontWeight.bold,
@@ -42,7 +47,7 @@ class MeasurementRequest extends StatelessWidget {
               ),
               Icon(
                 isFilled ? Icons.check : Icons.add,
-                color: Color(0xFF1D53BF),
+                color: const Color(0xFF1D53BF),
                 size: 32,
               ),
             ],

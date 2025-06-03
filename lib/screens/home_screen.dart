@@ -11,7 +11,6 @@ import 'package:measureapp/widgets/top_bar.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:measureapp/screens/growth_curve_screen.dart';
 
-
 class HomeScreen extends StatefulWidget {
   @override
   _HomeScreenState createState() => _HomeScreenState();
@@ -73,34 +72,35 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
       body: RefreshIndicator(
         onRefresh: _fetchSessionsData,
-        child: _isLoading
-            ? Center(child: CircularProgressIndicator())
-            : _errorMessage.isNotEmpty
+        child:
+            _isLoading
+                ? Center(child: CircularProgressIndicator())
+                : _errorMessage.isNotEmpty
                 ? ListView(
                   physics: AlwaysScrollableScrollPhysics(),
-                    children: [Center(child: Text('error: $_errorMessage'))],
-                  )
+                  children: [Center(child: Text('error: $_errorMessage'))],
+                )
                 : ListView(
                   physics: AlwaysScrollableScrollPhysics(),
                   padding: EdgeInsets.all(16.0),
-                    children: [
-                      Text(
-                        getGreeting(context),
-                        style: TextStyle(
-                        fontSize: 35,
+                  children: [
+                    Text(
+                      getGreeting(context),
+                      style: TextStyle(
+                        fontSize: 30,
                         color: Color(0xFF1D53BF),
                         fontWeight: FontWeight.bold,
                       ),
-                      ),
-                      Text(
-                        _patientName,
-                        style: TextStyle(
-                        fontSize: 25,
+                    ),
+                    Text(
+                      _patientName,
+                      style: TextStyle(
+                        fontSize: 30,
                         color: Colors.black,
                         fontWeight: FontWeight.bold,
                       ),
-                      ),
-                      SizedBox(height: 10),
+                    ),
+                    SizedBox(height: 10),
                     if (_noSessionsFound) NoSessionsBlock(),
                     ..._sessions.asMap().entries.map((entry) {
                       var session = entry.value;
@@ -110,48 +110,61 @@ class _HomeScreenState extends State<HomeScreen> {
                           SizedBox(height: 4),
                         ],
                       );
-                      }),
+                    }),
                     SizedBox(height: 10),
-                      Row(
-                        children: [
+                    Row(
+                      children: [
                         if (_isChildModeEnabled)
                           Expanded(
                             child: BigButton(
                               title: t.exercises,
                               subtitle: t.exercise,
-                              iconWidget: Image.asset('assets/icons/yoga.png'),
+                              iconWidget: Image.asset(
+                                'assets/icons/yoga.png',
+                                width: 55,
+                                height: 55,
+                                fit: BoxFit.contain,
+                              ),
+
                               onPressed: () {
                                 Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                    builder: (context) => ExerciseOne(sessionId: 0, requestId: 0),
+                                    builder:
+                                        (context) => ExerciseOne(
+                                          sessionId: 0,
+                                          requestId: 0,
+                                        ),
                                   ),
                                 );
                               },
                             ),
                           ),
                         if (_isChildModeEnabled) SizedBox(width: 8),
-                          Expanded(
-                            child: BigButton(
-                              title: t.insight,
-                              subtitle: t.growth_curve,
-                              iconWidget: Image.asset(
-                                'assets/icons/ruler.png',
-                              ),
-                              onPressed: () {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => GrowthCurveScreen(),
-                                  ),
-                                );
-                              },
+                        Expanded(
+                          child: BigButton(
+                            title: t.insight,
+                            subtitle: t.growth_curve,
+                            iconWidget: Image.asset(
+                              'assets/icons/ruler.png',
+                              width: 55,
+                              height: 55,
+                              fit: BoxFit.contain,
                             ),
+                            onPressed: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => GrowthCurveScreen(),
+                                ),
+                              );
+                            },
                           ),
-                        ],
-                      ),
-                    ],
-                  ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
       ),
     );
   }

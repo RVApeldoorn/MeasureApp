@@ -23,7 +23,7 @@
     "session_fulfilled": "{filledCount}/{totalCount} voltooid",
     "session_deadline_label": "Deadline: ",
     "session_unimplemented_type": "Meettype niet geïmplementeerd",
-    "height": "Lengte",
+    "height": "Lengtemeting",
     "weight": "Gewicht",
     "temperature": "Temperatuur",
     "goodMorning": "Goedemorgen",

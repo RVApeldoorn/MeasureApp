@@ -93,7 +93,6 @@ class SessionBlock extends StatelessWidget {
                         text: formatDateManual(context, dueDate),
                         style: TextStyle(
                           color: dueDateColor,
-                          fontStyle: FontStyle.italic,
                         ),
                       ),
                     ],
