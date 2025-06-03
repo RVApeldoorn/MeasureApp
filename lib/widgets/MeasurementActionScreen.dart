@@ -2,28 +2,28 @@ import 'package:flutter/material.dart';
 import 'package:measureapp/widgets/bottom_navigation_bar.dart';
 import 'package:measureapp/widgets/top_bar.dart';
 
-class MeasurementStepScreen extends StatelessWidget {
+class MeasurementActionScreen extends StatelessWidget {
   final String title;
   final String imagePath;
   final String stepTitle;
   final String description;
   final int stepIndex;
   final int totalSteps;
-  final VoidCallback onNext;
-  final String? customButtonText;
+  final String buttonText;
   final bool isLoading;
+  final VoidCallback onPressed;
 
-  const MeasurementStepScreen({
+  const MeasurementActionScreen({
+    Key? key,
     required this.title,
     required this.imagePath,
     required this.stepTitle,
     required this.description,
     required this.stepIndex,
     required this.totalSteps,
-    required this.onNext,
-    this.customButtonText,
+    required this.buttonText,
     this.isLoading = false,
-    Key? key,
+    required this.onPressed,
   }) : super(key: key);
 
   @override
@@ -84,13 +84,22 @@ class MeasurementStepScreen extends StatelessWidget {
             SizedBox(
               width: double.infinity,
               child: ElevatedButton(
-                onPressed: onNext,
+                onPressed: isLoading ? null : onPressed,
                 style: ElevatedButton.styleFrom(
                   backgroundColor: const Color(0xFF2A63D4),
                   minimumSize: const Size.fromHeight(48),
                   shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
                 ),
-                child: const Text('Volgende', style: TextStyle(color: Colors.white, fontSize: 16)),
+                child: isLoading
+                    ? const SizedBox(
+                        width: 24,
+                        height: 24,
+                        child: CircularProgressIndicator(
+                          color: Colors.white,
+                          strokeWidth: 2,
+                        ),
+                      )
+                    : Text(buttonText, style: const TextStyle(color: Colors.white, fontSize: 16)),
               ),
             ),
           ],

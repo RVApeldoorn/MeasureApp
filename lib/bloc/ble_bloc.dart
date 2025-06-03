@@ -10,6 +10,7 @@ class BleBloc extends Bloc<BleEvent, BleState> {
   StreamSubscription<List<int>>? _subscription;
 
   String? _lastDistance;
+  Timer? _timeoutTimer;
 
   BleBloc(this._bleService) : super(BleInitial()) {
     on<BleScanAndConnect>(_onScanAndConnect);
@@ -22,6 +23,9 @@ class BleBloc extends Bloc<BleEvent, BleState> {
     on<BleAverageMeasurementRequested>(_onAverageMeasurementRequested);
     on<BleDataReceived>(_onDataReceived);
     on<BleShowLastMeasurement>(_onShowLastMeasurement);
+    on<SaveReferenceMeasurement>(_onSaveReferenceMeasurement);
+    on<SaveCurrentMeasurement>(_onSaveCurrentMeasurement);
+    on<RequestMeasurement>(_onRequestMeasurement);
   }
 
   Future<void> _onScanAndConnect(BleScanAndConnect event, Emitter<BleState> emit) async {
@@ -30,21 +34,27 @@ class BleBloc extends Bloc<BleEvent, BleState> {
     try {
       await _bleService.scanAndConnect();
 
-      _subscription = _bleService.sensorDataStream?.listen(
-  (data) {
-    final message = utf8.decode(data);
-    add(BleMeasurementSuccessEvent(message));
-  },
-  onError: (e) {
-    print("Fout bij data stream: $e");
-    // add(BleError("Fout bij ontvangen van data: $e"));
-  },
-  onDone: () {
-    print("Data stream afgesloten");
-    // add(BleError("Verbinding met sensor is verbroken"));
-  },
-);
+      print("DEBUG: sensorDataStream na connect: ${_bleService.sensorDataStream}");
 
+      _subscription = _bleService.sensorDataStream?.listen(
+        (data) {
+          final message = utf8.decode(data);
+          print("DEBUG: Data ontvangen van sensor: $message");
+
+          // Bij ontvangen data cancel timeout
+          _timeoutTimer?.cancel();
+
+          add(BleMeasurementSuccessEvent(message));
+        },
+        onError: (e) {
+          print("Fout bij data stream: $e");
+          // optioneel: add(BleError("Fout bij ontvangen van data: $e"));
+        },
+        onDone: () {
+          print("Data stream afgesloten");
+          // optioneel: add(BleError("Verbinding met sensor is verbroken"));
+        },
+      );
 
       emit(BleConnected());
     } catch (e) {
@@ -55,102 +65,128 @@ class BleBloc extends Bloc<BleEvent, BleState> {
 
   Future<void> _onSendMeasure(BleSendMeasureCommand event, Emitter<BleState> emit) async {
     emit(BleMeasuring());
-    _bleService.sendMeasureCommand();
-    }
 
-  @override
-  Future<void> close() {
-    _subscription?.cancel();
-    return super.close();
+    // Start timeout timer (bijv. 5 sec)
+    _timeoutTimer?.cancel();
+    _timeoutTimer = Timer(const Duration(seconds: 5), () {
+      add(BleMeasurementTimeoutEvent());
+    });
+
+    await _bleService.sendMeasureCommand();
+  }
+
+  Future<void> _onRequestMeasurement(RequestMeasurement event, Emitter<BleState> emit) async {
+    // Dit event kan hetzelfde zijn als sendMeasure, of extra logica bevatten
+    emit(BleMeasuring());
+
+    _timeoutTimer?.cancel();
+    _timeoutTimer = Timer(const Duration(seconds: 5), () {
+      add(BleMeasurementTimeoutEvent());
+    });
+
+    await _bleService.sendMeasureCommand();
   }
 
   Future<void> _onWaitForNextMeasurement(
     BleWaitForNextMeasurement event,
     Emitter<BleState> emit,
   ) async {
-  emit(BleMeasuring());
+    emit(BleMeasuring());
 
-  try {
-    final data = await _bleService.sensorDataStream!.first.timeout(const Duration(seconds: 5));
-    final message = utf8.decode(data);
-    emit(BleMeasurementSuccess(message));
-  } catch (e) {
-    emit(BleError("Meting mislukt: $e"));
-  }
-}
-
-Future<void> _onAverageMeasurementRequested(
-  BleAverageMeasurementRequested event,
-  Emitter<BleState> emit,
-) async {
-  emit(BleMeasuring());
-
-  try {
-    final stream = _bleService.sensorDataStream;
-
-    if (stream == null) {
-      emit(BleError("Geen verbinding met sensor"));
-      return;
+    try {
+      final data = await _bleService.sensorDataStream!.first.timeout(const Duration(seconds: 5));
+      final message = utf8.decode(data);
+      emit(BleMeasurementSuccess(message));
+    } catch (e) {
+      emit(BleError("Meting mislukt: $e"));
     }
+  }
 
-    final List<double> distances = [];
+  Future<void> _onAverageMeasurementRequested(
+    BleAverageMeasurementRequested event,
+    Emitter<BleState> emit,
+  ) async {
+    emit(BleMeasuring());
 
-    await for (final data in stream) {
-      try {
-        final message = utf8.decode(data);
-        final value = double.tryParse(message.replaceAll(" cm", ""));
+    try {
+      final stream = _bleService.sensorDataStream;
 
-        if (value != null) {
-          distances.add(value);
-        }
-
-        if (distances.length >= 5) break;
-
-      } catch (e) {
-        print("❌ Fout bij verwerken data: $e");
-        // Bij een fout in deze data item, gewoon verder met volgende
-        continue;
+      if (stream == null) {
+        emit(BleError("Geen verbinding met sensor"));
+        return;
       }
+
+      final List<double> distances = [];
+
+      await for (final data in stream) {
+        try {
+          final message = utf8.decode(data);
+          final value = double.tryParse(message.replaceAll(" cm", ""));
+
+          if (value != null) {
+            distances.add(value);
+          }
+
+          if (distances.length >= 5) break;
+        } catch (e) {
+          print("❌ Fout bij verwerken data: $e");
+          continue;
+        }
+      }
+
+      if (distances.isEmpty) {
+        emit(BleError("Geen geldige metingen ontvangen"));
+        return;
+      }
+
+      final avg = distances.reduce((a, b) => a + b) / distances.length;
+      emit(BleMeasurementSuccess(avg.toStringAsFixed(1)));
+    } catch (e) {
+      print("❌ Fout bij data stream: $e");
+      emit(BleError("Fout bij ontvangen van data: $e"));
     }
-
-    if (distances.isEmpty) {
-      emit(BleError("Geen geldige metingen ontvangen"));
-      return;
-    }
-
-    final avg = distances.reduce((a, b) => a + b) / distances.length;
-    emit(BleMeasurementSuccess(avg.toStringAsFixed(1)));
-
-  } catch (e) {
-    print("❌ Fout bij data stream: $e");
-    emit(BleError("Fout bij ontvangen van data: $e"));
   }
-}
 
-void _onDataReceived(BleDataReceived event, Emitter<BleState> emit) {
+  void _onDataReceived(BleDataReceived event, Emitter<BleState> emit) {
     // Sla op, maar update de UI niet
     _lastDistance = event.distance;
   }
 
-void _onShowLastMeasurement(BleShowLastMeasurement event, Emitter<BleState> emit) {
+  void _onShowLastMeasurement(BleShowLastMeasurement event, Emitter<BleState> emit) {
     if (_lastDistance != null) {
-      emit(BleMeasurementSuccess(_lastDistance!)); // Update UI alleen bij knopdruk
+      emit(BleMeasurementSuccess(_lastDistance!));
     } else {
       emit(BleError("Nog geen meting ontvangen"));
     }
   }
 
-}
+  void _onSaveReferenceMeasurement(SaveReferenceMeasurement event, Emitter<BleState> emit) {
+    if (state is BleMeasurementState) {
+      final currentState = state as BleMeasurementState;
+      emit(currentState.copyWith(referenceMeasurement: event.measurement));
+    } else {
+      emit(BleMeasurementState(referenceMeasurement: event.measurement));
+    }
+  }
 
-void _onMeasurementSuccess(BleMeasurementSuccessEvent event, Emitter<BleState> emit) {
-  emit(BleMeasurementSuccess(event.distance));
-}
+  void _onSaveCurrentMeasurement(SaveCurrentMeasurement event, Emitter<BleState> emit) {
+    if (state is BleMeasurementState) {
+      final currentState = state as BleMeasurementState;
+      emit(currentState.copyWith(currentMeasurement: event.measurement));
+    } else {
+      emit(BleMeasurementState(currentMeasurement: event.measurement));
+    }
+  }
 
-class BleMeasurementSuccessEvent extends BleEvent {
-  final String distance;
-  const BleMeasurementSuccessEvent(this.distance);
+  void _onMeasurementSuccess(BleMeasurementSuccessEvent event, Emitter<BleState> emit) {
+    print("Measurement success met waarde: ${event.distance}");
+    emit(BleMeasurementSuccess(event.distance));
+  }
 
   @override
-  List<Object?> get props => [distance];
+  Future<void> close() {
+    _subscription?.cancel();
+    _timeoutTimer?.cancel();
+    return super.close();
+  }
 }
-

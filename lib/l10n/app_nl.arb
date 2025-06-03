@@ -43,6 +43,14 @@
     "heightMeasurement": "Lengtemeting",
     "relaxChild": "Laat het kind ontspannen ademhalen.",
     "step2Elephant": "Blaas zo hard als een Olifant!",
-    "blablabla": "Bla bla bla"
+    "blablabla": "Bla bla bla",
+    "hangLaser": "Hang de laser op aan een lege muur en druk op volgende voor referentie.",
+    "resultReference": "De referentiemeting is",
+    "saveReference": "Sla referentie op",
+    "successReference": "Referentiemeting succesvol",
+    "warningReference": "Voer eerst een meting uit",
+    "referenceTitle": "Referentiemeting",
+    "referenceStep": "Stap 1: Referentie",
+    "nextStep": "Ga naar volgende stap"
 }
   

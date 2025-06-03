@@ -41,3 +41,26 @@ class BleError extends BleState {
   @override
   List<Object?> get props => [message];
 }
+
+class BleMeasurementState extends BleState {
+  final String? referenceMeasurement;
+  final String? currentMeasurement;
+
+  const BleMeasurementState({
+    this.referenceMeasurement,
+    this.currentMeasurement,
+  });
+
+  BleMeasurementState copyWith({
+    String? referenceMeasurement,
+    String? currentMeasurement,
+  }) {
+    return BleMeasurementState(
+      referenceMeasurement: referenceMeasurement ?? this.referenceMeasurement,
+      currentMeasurement: currentMeasurement ?? this.currentMeasurement,
+    );
+  }
+
+  @override
+  List<Object?> get props => [referenceMeasurement, currentMeasurement];
+}

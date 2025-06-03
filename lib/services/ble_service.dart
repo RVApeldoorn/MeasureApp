@@ -21,6 +21,7 @@ class BleService {
 
   final Uuid serviceUuid = Uuid.parse("12345678-1234-5678-1234-56789abcdef0");
   final Uuid characteristicUuid = Uuid.parse("12345678-1234-5678-1234-56789abcdef1");
+  final Uuid commandCharacteristicUuid = Uuid.parse("12345678-1234-5678-1234-56789abcdef2");
 
   DiscoveredDevice? _device;
   Stream<List<int>>? _sensorDataStream;
@@ -79,18 +80,30 @@ class BleService {
   );
 
   _sensorDataStream = _ble.subscribeToCharacteristic(characteristic);
+  
 }
 
 
-  void sendMeasureCommand() {
-    if (_device == null) return;
+  Future<void> sendMeasureCommand() async {
+  if (_device == null) return;
 
-    final characteristic = QualifiedCharacteristic(
-      serviceId: serviceUuid,
-      characteristicId: characteristicUuid,
-      deviceId: _device!.id,
+  final commandCharacteristic = QualifiedCharacteristic(
+    serviceId: serviceUuid,
+    characteristicId: commandCharacteristicUuid,
+    deviceId: _device!.id,
+  );
+
+  try {
+    // Check wat je ESP32 precies verwacht: string of bytes
+    await _ble.writeCharacteristicWithResponse(
+      commandCharacteristic,
+      value: "start".codeUnits, // Of bijvoorbeeld: [0x01]
     );
-
-    _ble.writeCharacteristicWithResponse(characteristic, value: [0x01]);
+  } catch (e) {
+    print("Fout bij verzenden startcommando: $e");
+    rethrow;
   }
+}
+
+
 }

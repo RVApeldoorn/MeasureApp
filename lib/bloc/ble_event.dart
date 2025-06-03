@@ -51,3 +51,24 @@ class BleShowLastMeasurement extends BleEvent {
   @override
   List<Object?> get props => [];
 }
+
+class RequestMeasurement extends BleEvent {
+  @override
+  List<Object?> get props => [];
+}
+
+class SaveReferenceMeasurement extends BleEvent {
+  final String measurement;
+  SaveReferenceMeasurement(this.measurement);
+
+  @override
+  List<Object?> get props => [measurement];
+}
+
+class SaveCurrentMeasurement extends BleEvent {
+  final String measurement;
+  SaveCurrentMeasurement(this.measurement);
+
+  @override
+  List<Object?> get props => [measurement];
+}
