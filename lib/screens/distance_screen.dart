@@ -59,12 +59,12 @@ class _DistanceScreenState extends State<DistanceScreen> {
           }
 
           return GenericStepScreen(
-            title: l10n.titleLength,
+            title: l10n.measurement,
             imagePath: 'assets/images/distance.png',
-            stepTitle: l10n.lengthStep,
+            stepTitle: l10n.heightMeasurement,
             description: description,
-            stepIndex: 7,
-            totalSteps: 7,
+            stepIndex: 2,
+            totalSteps: 3,
             // isLoading: state is BleMeasuring,
             onNext: _onMeasurePressed,
             // customButtonText: l10n.measureDistance,

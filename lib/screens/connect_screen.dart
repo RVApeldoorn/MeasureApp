@@ -5,16 +5,18 @@ import 'package:measureapp/bloc/ble_event.dart';
 import 'package:measureapp/bloc/ble_state.dart';
 import 'reference_measurement_screen.dart';
 import 'package:measureapp/widgets/MeasurementActionScreen.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class ConnectScreen extends StatelessWidget {
   const ConnectScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     return BlocBuilder<BleBloc, BleState>(
       builder: (context, state) {
         String imagePath = 'assets/images/neutral.png';
-        String buttonText = 'Verbinding maken';
+        String buttonText = l10n.heightMeasurement;
         bool isLoading = false;
         VoidCallback onPressed = () {
           context.read<BleBloc>().add(BleScanAndConnect());
@@ -24,24 +26,25 @@ class ConnectScreen extends StatelessWidget {
           imagePath = 'assets/images/neutral.png';
           isLoading = true;
           buttonText = 'Verbinding maken...';
-        } else if (state is BleConnected) {
+        } else if (state is BleConnected || true) {
           imagePath = 'assets/images/connected.png';
-          buttonText = 'Volgende';
+          buttonText = l10n.next;
           onPressed = () {
             Navigator.push(context, MaterialPageRoute(builder: (_) => const ReferenceMeasurementScreen()));
           };
-        } else if (state is BleError) {
-          imagePath = 'assets/images/not_connected.png';
-          buttonText = 'Opnieuw proberen';
-        }
+        } 
+        // else if (state is BleError) {
+        //   imagePath = 'assets/images/not_connected.png';
+        //   buttonText = 'Opnieuw proberen';
+        // }
 
         return MeasurementActionScreen(
-          title: 'Verbinding maken',
+          title: l10n.measurement,
           imagePath: imagePath,
-          stepTitle: 'Stap 1: Verbinden',
+          stepTitle: l10n.heightMeasurement,
           description: 'Zorg dat het apparaat aanstaat en dichtbij is.',
           stepIndex: 0,
-          totalSteps: 4,
+          totalSteps: 3,
           buttonText: buttonText,
           isLoading: isLoading,
           onPressed: onPressed,
