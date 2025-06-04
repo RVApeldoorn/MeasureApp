@@ -51,5 +51,9 @@
   "warningReference": "Önce bir ölçüm yapın",
   "referenceTitle": "Referans Ölçümü",
   "referenceStep": "Adım 1: Referans",
-  "nextStep": "Sonraki adıma geç"
+  "nextStep": "Sonraki adıma geç",
+  "mesureDescription": "Ölçüm şu anda yapılıyor. Ölçümü tamamlamak için Mesafeyi ölç'e tıklayın.",
+  "titleLength": "Uzunluk Ölçümü",
+  "lengthStep": "Adım 7",
+  "measureDistance": "Mesafeyi ölç"
 }

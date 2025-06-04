@@ -51,6 +51,9 @@
   "warningReference": "Please perform a measurement first",
   "referenceTitle": "Reference Measurement",
   "referenceStep": "Step 1: Reference",
-  "nextStep": "Go to next step"
-
+  "nextStep": "Go to next step",
+  "mesureDescription": "The measurement is now being taken. Click Measure distance to complete the measurement.",
+  "titleLength": "Length Measurement",
+  "lengthStep": "Step 7",
+  "measureDistance": "Measure distance"
 }

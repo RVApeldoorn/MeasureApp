@@ -46,7 +46,10 @@
     "warningReference": "Esegui prima una misurazione",
     "referenceTitle": "Misurazione di riferimento",
     "referenceStep": "Fase 1: Riferimento",
-    "nextStep": "Vai al passo successivo"
-
+    "nextStep": "Vai al passo successivo",
+    "mesureDescription": "La misurazione è in corso. Clicca su Misura distanza per completarla.",
+    "titleLength": "Misurazione della lunghezza",
+    "lengthStep": "Fase 7",
+    "measureDistance": "Misura distanza"
 }
   
