@@ -62,6 +62,7 @@ class HomeScreen extends StatelessWidget {
                 Locale('it'),
                 Locale('zh'),
                 Locale('ar'),
+                Locale('tr'),
               ],
             );
           },

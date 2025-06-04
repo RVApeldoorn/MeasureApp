@@ -23,7 +23,7 @@
     "session_fulfilled": "{filledCount}/{totalCount} voltooid",
     "session_deadline_label": "Deadline: ",
     "session_unimplemented_type": "Meettype niet geïmplementeerd",
-    "height": "Lengtemeting",
+    "height": "Lengte",
     "weight": "Gewicht",
     "temperature": "Temperatuur",
     "goodMorning": "Goedemorgen",
@@ -51,7 +51,7 @@
     "referenceTitle": "Referentiemeting",
     "referenceStep": "Stap 1: Referentie",
     "nextStep": "Ga naar volgende stap",
-    "measureDescription": "De meting wordt nu gedaan. Klik op Meet afstand om de meting af te ronden.",
+    "measureDescription": "De meting wordt nu uitgevoerd. Klik op Meet afstand om de meting te voltooien.",
     "titleLength": "Lengtemeting",
     "lengthStep": "Stap 7",
     "measureDistance": "Meetafstand",
@@ -78,10 +78,8 @@
     "language": "Taal",
     "skip": "Overslaan",
     "successful": "De meting is succesvol afgerond!\nBekijk hier jouw groei.",
-    "insight": "Inzicht",
     "view": "Indienen en bekijken",
     "questions": "Vragen",
     "questionExpand": "Heb je nog een vraag? Stel hem hier aan de arts. De arts belt je zo snel mogelijk terug met een antwoord.",
     "submit": "Meting indienen"
 }
-  
