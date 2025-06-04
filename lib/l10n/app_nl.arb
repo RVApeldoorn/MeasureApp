@@ -79,8 +79,9 @@
     "skip": "Overslaan",
     "successful": "De meting is succesvol afgerond!\nBekijk hier jouw groei.",
     "insight": "Inzicht",
-    "view": "Bekijk",
+    "view": "Indienen en bekijken",
     "questions": "Vragen",
-    "questionExpand": "Heb je nog een vraag? Stel hem hier aan de arts.\nDe arts belt je zo snel mogelijk terug met een antwoord."
+    "questionExpand": "Heb je nog een vraag? Stel hem hier aan de arts. De arts belt je zo snel mogelijk terug met een antwoord.",
+    "submit": "Meting indienen"
 }
   

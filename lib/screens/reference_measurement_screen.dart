@@ -8,7 +8,14 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'distance_screen.dart';
 
 class ReferenceMeasurementScreen extends StatefulWidget {
-  const ReferenceMeasurementScreen({Key? key}) : super(key: key);
+  final int sessionId;
+  final int requestId;
+
+  const ReferenceMeasurementScreen({
+    Key? key,
+    required this.sessionId,
+    required this.requestId,
+  }) : super(key: key);
 
   @override
   State<ReferenceMeasurementScreen> createState() =>
@@ -22,7 +29,7 @@ class _ReferenceMeasurementScreenState
 
   void _onMeasurePressed() {
     context.read<BleBloc>().add(BleSendMeasureCommand());
-    
+
   }
 
   void _onNextPressed() {
@@ -31,7 +38,10 @@ class _ReferenceMeasurementScreenState
       // context.read<BleBloc>().add(SaveReferenceMeasurement(measurementValue!));
       Navigator.push(
         context,
-        MaterialPageRoute(builder: (_) => DistanceScreen()),
+        MaterialPageRoute(builder: (_) => DistanceScreen( 
+          sessionId: widget.sessionId,
+          requestId: widget.requestId,
+        )),
       );
     } else {
       ScaffoldMessenger.of(context).showSnackBar(

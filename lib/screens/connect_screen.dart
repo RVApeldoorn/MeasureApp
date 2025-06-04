@@ -8,7 +8,10 @@ import 'package:measureapp/widgets/MeasurementActionScreen.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class ConnectScreen extends StatelessWidget {
-  const ConnectScreen({super.key});
+  final int sessionId;
+  final int requestId;
+
+  const ConnectScreen({super.key, required this.sessionId, required this.requestId});
 
   @override
   Widget build(BuildContext context) {
@@ -30,7 +33,10 @@ class ConnectScreen extends StatelessWidget {
           imagePath = 'assets/images/connected.png';
           buttonText = l10n.next;
           onPressed = () {
-            Navigator.push(context, MaterialPageRoute(builder: (_) => const ReferenceMeasurementScreen()));
+            Navigator.push(context, MaterialPageRoute(builder: (_) => ReferenceMeasurementScreen(
+              sessionId: this.sessionId, // sessionId,
+              requestId: this.requestId, // requestId,
+            )));
           };
         } 
         // else if (state is BleError) {

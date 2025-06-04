@@ -8,7 +8,10 @@ import 'package:measureapp/widgets/generic_step_screen.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class DistanceScreen extends StatefulWidget {
-  const DistanceScreen({super.key});
+  final int sessionId;
+  final int requestId;
+  
+  const DistanceScreen({super.key, required this.sessionId, required this.requestId});
 
   @override
   State<DistanceScreen> createState() => _DistanceScreenState();
@@ -21,7 +24,9 @@ class _DistanceScreenState extends State<DistanceScreen> {
     context.read<BleBloc>().add(BleSendMeasureCommand());
     Navigator.push(
       context,
-      MaterialPageRoute(builder: (_) => const MeasurementFinishedScreen()),
+      MaterialPageRoute(builder: (_) => MeasurementFinishedScreen(
+        sessionId: widget.sessionId, // sessionId,
+        requestId: widget.requestId,)),
     );
   }
 

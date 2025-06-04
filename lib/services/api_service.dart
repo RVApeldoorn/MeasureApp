@@ -37,7 +37,7 @@ class ApiService {
       if (token == null) {
         throw Exception('No token found');
       }
-
+      print('Submitting measurement: $value for sessionId: $sessionId, measurementRequestId: $measurementRequestId');
       _dio.options.headers['Authorization'] = 'Bearer $token';
       _dio.options.headers['Content-Type'] = 'application/json';
 
@@ -46,13 +46,13 @@ class ApiService {
         "values": [
           {
             "measurementRequestId": measurementRequestId,
-            "value": value,
+            "value": double.parse(value),
             "note": note ?? ''
           }
         ]
       };
-
-      await _dio.post('http://localjoost:5005/api/patient/submit', data: data);
+      print('Data to submit: $data');
+      await _dio.post('http://localhost:5005/api/patient/submit', data: data);
     } catch (e) {
       throw Exception('Submit error: $e');
     }

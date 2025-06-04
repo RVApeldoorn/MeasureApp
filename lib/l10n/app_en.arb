@@ -80,7 +80,8 @@
   "skip": "Skip",
   "successful": "The measurement is successful.\nSee your results here",
   "insight": "Insight",
-  "view": "View",
+  "view": "Submit and view",
   "questions": "Questions",
-  "questionExpand": "Do you have any questions? Asked the doctor.\nThe doctor will contact you as fast as possible."
+  "questionExpand": "Do you have any questions? Asked the doctor. The doctor will contact you as fast as possible.",
+  "submit": "Submit measurement"
 }
