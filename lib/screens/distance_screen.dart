@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:measureapp/bloc/ble_bloc.dart';
 import 'package:measureapp/bloc/ble_event.dart';
 import 'package:measureapp/bloc/ble_state.dart';
+import 'package:measureapp/widgets/succes_screen.dart';
 import 'package:measureapp/widgets/generic_step_screen.dart'; 
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
@@ -18,6 +19,10 @@ class _DistanceScreenState extends State<DistanceScreen> {
 
   void _onMeasurePressed() {
     context.read<BleBloc>().add(BleSendMeasureCommand());
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (_) => const MeasurementFinishedScreen()),
+    );
   }
 
   double? _parseToDouble(String? value) {

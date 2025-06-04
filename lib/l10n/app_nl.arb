@@ -76,6 +76,11 @@
     "growth": "Jouw groei",
     "home": "Start",
     "language": "Taal",
-    "skip": "Overslaan"
+    "skip": "Overslaan",
+    "successful": "De meting is succesvol afgerond!\nBekijk hier jouw groei.",
+    "insight": "Inzicht",
+    "view": "Bekijk",
+    "questions": "Vragen",
+    "questionExpand": "Heb je nog een vraag? Stel hem hier aan de arts.\nDe arts belt je zo snel mogelijk terug met een antwoord."
 }
   

@@ -22,6 +22,7 @@ class _ReferenceMeasurementScreenState
 
   void _onMeasurePressed() {
     context.read<BleBloc>().add(BleSendMeasureCommand());
+    
   }
 
   void _onNextPressed() {
