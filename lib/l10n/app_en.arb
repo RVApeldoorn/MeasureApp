@@ -43,5 +43,14 @@
   "heightMeasurement": "Heightmeasurement",
   "relaxChild": "Let the child breathe relaxed.",
   "step2Elephant": "Blow as hard as an Elephant!",
-  "blablabla": "Bla bla bla"
+  "blablabla": "Bla bla bla",
+  "hangLaser": "Hang the laser on an empty wall and press next for reference.",
+  "resultReference": "The reference measurement is",
+  "saveReference": "Save reference",
+  "successReference": "Reference measurement successful",
+  "warningReference": "Please perform a measurement first",
+  "referenceTitle": "Reference Measurement",
+  "referenceStep": "Step 1: Reference",
+  "nextStep": "Go to next step"
+
 }

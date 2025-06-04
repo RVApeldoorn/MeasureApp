@@ -3,7 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:measureapp/bloc/ble_bloc.dart';
 import 'package:measureapp/bloc/ble_event.dart';
 import 'package:measureapp/bloc/ble_state.dart';
-import 'package:measureapp/widgets/measurement_step_screen.dart'; // jouw custom widget
+import 'package:measureapp/widgets/measurement_step_screen.dart'; 
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class DistanceScreen extends StatefulWidget {
   const DistanceScreen({super.key});
@@ -27,6 +28,7 @@ class _DistanceScreenState extends State<DistanceScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     return BlocListener<BleBloc, BleState>(
       listener: (context, state) {
         if (state is BleMeasurementSuccess) {
@@ -40,7 +42,7 @@ class _DistanceScreenState extends State<DistanceScreen> {
       },
       child: BlocBuilder<BleBloc, BleState>(
         builder: (context, state) {
-          String description = "De meting wordt nu gedaan. Klik op Meet afstand om de meting af te ronden.";
+          String description = l10n.measureDescription;
 
           final reference = (state is BleMeasurementState) ? state.referenceMeasurement : null;
           final double? refValue = _parseToDouble(reference);
@@ -57,15 +59,15 @@ class _DistanceScreenState extends State<DistanceScreen> {
           }
 
           return MeasurementStepScreen(
-            title: "Lengtemeting",
+            title: l10n.titleLength,
             imagePath: 'assets/images/distance.png',
-            stepTitle: "Stap 7",
+            stepTitle: l10n.lengthStep,
             description: description,
             stepIndex: 7,
             totalSteps: 7,
             isLoading: state is BleMeasuring,
             onNext: _onMeasurePressed,
-            customButtonText: 'Meet afstand',
+            customButtonText: l10n.measureDistance,
           );
         },
       ),

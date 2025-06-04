@@ -3,7 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:measureapp/bloc/ble_bloc.dart';
 import 'package:measureapp/bloc/ble_event.dart';
 import 'package:measureapp/bloc/ble_state.dart';
-import 'package:measureapp/widgets/measurement_step_screen.dart'; // jouw widget
+import 'package:measureapp/widgets/measurement_step_screen.dart'; 
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'distance_screen.dart'; 
 
 class ReferenceMeasurementScreen extends StatefulWidget {
@@ -43,6 +44,7 @@ class _ReferenceMeasurementScreenState extends State<ReferenceMeasurementScreen>
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     return BlocListener<BleBloc, BleState>(
       listener: (context, state) {
         if (state is BleMeasurementSuccess) {
@@ -60,17 +62,17 @@ class _ReferenceMeasurementScreenState extends State<ReferenceMeasurementScreen>
         }
       },
       child: MeasurementStepScreen(
-        title: "Referentiemeting",
+        title: l10n.referenceTitle,
         imagePath: 'assets/images/reference.png',
-        stepTitle: "Stap 1: Referentie",
+        stepTitle: l10n.referenceTitle,
         description: measurementDone && measurementValue != null
-          ? "De referentiemeting is ${_formatMeters(measurementValue!)} m"
-          : "Hang de laser op aan een lege muur en druk op volgende voor referentie.",
+          ? _formatMeters(measurementValue!)
+          : l10n.hangLaser,
         stepIndex: 1,
         totalSteps: 8,
         isLoading: false,
         onNext: measurementDone ? _onNextPressed : _onMeasurePressed,
-        customButtonText: measurementDone ? "Ga naar volgende stap" : "Sla referentie op",
+        customButtonText: measurementDone ? l10n.nextStep : l10n.saveReference,
       ),
     );
   }

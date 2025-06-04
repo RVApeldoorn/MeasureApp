@@ -43,5 +43,13 @@
   "heightMeasurement": "Boy ölçümü",
   "relaxChild": "Çocuğun rahat nefes almasını sağlayın.",
   "step2Elephant": "Bir fil gibi güçlü üfle!",
-  "blablabla": "Laf laf laf "
+  "blablabla": "Laf laf laf ",
+  "hangLaser": "Lazeri boş bir duvara yerleştirin ve referans için ileriye basın.",
+  "resultReference": "Referans ölçümü",
+  "saveReference": "Referansı kaydet",
+  "successReference": "Referans ölçümü başarılı",
+  "warningReference": "Önce bir ölçüm yapın",
+  "referenceTitle": "Referans Ölçümü",
+  "referenceStep": "Adım 1: Referans",
+  "nextStep": "Sonraki adıma geç"
 }

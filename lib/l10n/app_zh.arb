@@ -38,5 +38,14 @@
     "month9": "九月",
     "month10": "十月",
     "month11": "十一月",
-    "month12": "十二月"
+    "month12": "十二月",
+    "hangLaser": "将激光仪挂在空墙上，然后点击“下一步”进行参考测量。",
+    "resultReference": "参考测量为",
+    "saveReference": "保存参考值",
+    "successReference": "参考测量成功",
+    "warningReference": "请先进行一次测量",
+    "referenceTitle": "参考测量",
+    "referenceStep": "步骤 1：参考",
+    "nextStep": "进入下一步"
+
 }  

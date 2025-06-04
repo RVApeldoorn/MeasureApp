@@ -38,6 +38,15 @@
     "month9": "Settembre",
     "month10": "Ottobre",
     "month11": "Novembre",
-    "month12": "Dicembre"
+    "month12": "Dicembre",
+    "hangLaser": "Appendi il laser a una parete vuota e premi avanti per la misurazione di riferimento.",
+    "resultReference": "La misurazione di riferimento è",
+    "saveReference": "Salva riferimento",
+    "successReference": "Misurazione di riferimento riuscita",
+    "warningReference": "Esegui prima una misurazione",
+    "referenceTitle": "Misurazione di riferimento",
+    "referenceStep": "Fase 1: Riferimento",
+    "nextStep": "Vai al passo successivo"
+
 }
   

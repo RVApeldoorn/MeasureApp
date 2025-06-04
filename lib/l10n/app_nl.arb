@@ -51,6 +51,10 @@
     "warningReference": "Voer eerst een meting uit",
     "referenceTitle": "Referentiemeting",
     "referenceStep": "Stap 1: Referentie",
-    "nextStep": "Ga naar volgende stap"
+    "nextStep": "Ga naar volgende stap",
+    "mesureDescription": "De meting wordt nu gedaan. Klik op Meet afstand om de meting af te ronden.",
+    "titleLength": "Lengtemeting",
+    "lengthStep": "Stap 7",
+    "measureDistance": "Meet afstand"
 }
   
