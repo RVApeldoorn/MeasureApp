@@ -3,9 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:measureapp/bloc/ble_bloc.dart';
 import 'package:measureapp/bloc/ble_event.dart';
 import 'package:measureapp/bloc/ble_state.dart';
-import 'distance_screen.dart';
-import 'ReferenceMeasurementScreen.dart';
-import 'step_two_measurement_screen.dart';
+import 'reference_measurement_screen.dart';
 import 'package:measureapp/widgets/MeasurementActionScreen.dart';
 
 class ConnectScreen extends StatelessWidget {

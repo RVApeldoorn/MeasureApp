@@ -49,7 +49,7 @@
     "referenceTitle": "参考测量",
     "referenceStep": "步骤 1：参考",
     "nextStep": "进入下一步",
-    "mesureDescription": "正在进行测量。点击“测量距离”以完成测量。",
+    "measureDescription": "正在进行测量。点击“测量距离”以完成测量。",
     "titleLength": "长度测量",
     "lengthStep": "步骤 7",
     "measureDistance": "测量距离", 

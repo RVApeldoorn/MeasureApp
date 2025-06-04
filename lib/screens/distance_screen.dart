@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:measureapp/bloc/ble_bloc.dart';
 import 'package:measureapp/bloc/ble_event.dart';
 import 'package:measureapp/bloc/ble_state.dart';
-import 'package:measureapp/widgets/measurement_step_screen.dart'; 
+import 'package:measureapp/widgets/generic_step_screen.dart'; 
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class DistanceScreen extends StatefulWidget {
@@ -58,16 +58,16 @@ class _DistanceScreenState extends State<DistanceScreen> {
                           "Druk op meten om te vergelijken.";
           }
 
-          return MeasurementStepScreen(
+          return GenericStepScreen(
             title: l10n.titleLength,
             imagePath: 'assets/images/distance.png',
             stepTitle: l10n.lengthStep,
             description: description,
             stepIndex: 7,
             totalSteps: 7,
-            isLoading: state is BleMeasuring,
+            // isLoading: state is BleMeasuring,
             onNext: _onMeasurePressed,
-            customButtonText: l10n.measureDistance,
+            // customButtonText: l10n.measureDistance,
           );
         },
       ),

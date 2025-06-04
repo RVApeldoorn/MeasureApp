@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:measureapp/bloc/ble_bloc.dart';
 import 'package:measureapp/bloc/ble_event.dart';
 import 'package:measureapp/bloc/ble_state.dart';
-import 'package:measureapp/widgets/measurement_step_screen.dart'; 
+import 'package:measureapp/widgets/generic_step_screen.dart'; 
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'distance_screen.dart'; 
 
@@ -61,7 +61,7 @@ class _ReferenceMeasurementScreenState extends State<ReferenceMeasurementScreen>
           );
         }
       },
-      child: MeasurementStepScreen(
+      child: GenericStepScreen(
         title: l10n.referenceTitle,
         imagePath: 'assets/images/reference.png',
         stepTitle: l10n.referenceTitle,
@@ -70,9 +70,9 @@ class _ReferenceMeasurementScreenState extends State<ReferenceMeasurementScreen>
           : l10n.hangLaser,
         stepIndex: 1,
         totalSteps: 8,
-        isLoading: false,
+        // isLoading: false,
         onNext: measurementDone ? _onNextPressed : _onMeasurePressed,
-        customButtonText: measurementDone ? l10n.nextStep : l10n.saveReference,
+        // customButtonText: measurementDone ? l10n.nextStep : l10n.saveReference,
       ),
     );
   }
