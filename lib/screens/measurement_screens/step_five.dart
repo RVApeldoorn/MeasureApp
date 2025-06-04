@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:measureapp/screens/home_screen.dart';
+import 'package:measureapp/screens/connect_screen.dart';
 import 'package:measureapp/widgets/generic_step_screen.dart';
 
 class StepFive extends StatelessWidget {
@@ -21,7 +21,7 @@ class StepFive extends StatelessWidget {
       totalSteps: 5,
       onNext: () => Navigator.push(
         context,
-        MaterialPageRoute(builder: (_) => HomeScreen()),
+        MaterialPageRoute(builder: (_) => ConnectScreen(sessionId: sessionId, requestId: requestId)),
       ),
     );
   }

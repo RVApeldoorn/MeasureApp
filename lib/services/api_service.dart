@@ -25,4 +25,36 @@ class ApiService {
       throw Exception('Error: $e');
     }
   }
+  Future<void> submitMeasurement({
+    required int sessionId,
+    required int measurementRequestId,
+    required String value,
+    String? note,
+  }) async {
+    try {
+      String? token = await SecureStorage.getToken();
+
+      if (token == null) {
+        throw Exception('No token found');
+      }
+      print('Submitting measurement: $value for sessionId: $sessionId, measurementRequestId: $measurementRequestId');
+      _dio.options.headers['Authorization'] = 'Bearer $token';
+      _dio.options.headers['Content-Type'] = 'application/json';
+
+      final data = {
+        "sessionId": sessionId,
+        "values": [
+          {
+            "measurementRequestId": measurementRequestId,
+            "value": double.parse(value),
+            "note": note ?? ''
+          }
+        ]
+      };
+      print('Data to submit: $data');
+      await _dio.post('http://localhost:5005/api/patient/submit', data: data);
+    } catch (e) {
+      throw Exception('Submit error: $e');
+    }
+  }
 }
