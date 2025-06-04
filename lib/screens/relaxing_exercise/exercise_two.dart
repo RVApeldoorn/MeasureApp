@@ -26,6 +26,12 @@ class ExerciseTwo extends StatelessWidget {
             ? MaterialPageRoute(builder: (_) => HomeScreen())
             : MaterialPageRoute(builder: (_) => StepOne(sessionId: sessionId, requestId: requestId)),
       ),
+      onSkip: () => Navigator.push(
+        context,
+        requestId == 0
+            ? MaterialPageRoute(builder: (_) => HomeScreen())
+            : MaterialPageRoute(builder: (_) => StepOne(sessionId: sessionId, requestId: requestId)),
+      ),
     );
   }
 }
