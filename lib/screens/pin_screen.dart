@@ -3,6 +3,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:measureapp/utils/secure_storage.dart';
 import 'package:measureapp/screens/pin_lock_screen.dart';
 import 'package:measureapp/widgets/numpad_widget.dart';
+import 'package:measureapp/widgets/pin_dots_widget.dart';
 
 class PinScreen extends StatefulWidget {
   const PinScreen({super.key});
@@ -81,25 +82,6 @@ class _PinScreenState extends State<PinScreen> {
     }
   }
 
-  Widget _buildPinDots(String pin) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: List.generate(4, (index) {
-        return Container(
-          margin: const EdgeInsets.symmetric(horizontal: 12),
-          width: 50,
-          height: 50,
-          decoration: BoxDecoration(
-            color: index < pin.length
-                ? const Color(0xFF1D53BF)
-                : const Color(0xFFE6ECF6),
-            borderRadius: BorderRadius.circular(8),
-          ),
-        );
-      }),
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     final loc = AppLocalizations.of(context)!;
@@ -113,7 +95,7 @@ class _PinScreenState extends State<PinScreen> {
             Text(
               loc.app_title,
               style: const TextStyle(
-                fontSize: 36,
+                fontSize: 40,
                 fontWeight: FontWeight.bold,
                 color: Colors.black,
               ),
@@ -122,12 +104,18 @@ class _PinScreenState extends State<PinScreen> {
             Text(
               _showConfirmField ? loc.pin_confirm : loc.pin_set,
               style: const TextStyle(
-                fontSize: 18,
-                color: Color(0xFF666666),
+                fontSize: 20,
+                color: Color(0xFF2B59BA),
               ),
             ),
             const SizedBox(height: 32),
-            _buildPinDots(_showConfirmField ? _confirmPinController.text : _pinController.text),
+            PinDotsWidget(
+              pinLength:
+                  _showConfirmField ? _confirmPinController.text.length : _pinController.text.length,
+              dotSize: 60,
+              spacing: 12,
+              borderRadius: 5,
+            ),
             const Spacer(),
             NumpadWidget(
               onNumberPress: _onNumberPress,

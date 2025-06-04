@@ -49,21 +49,21 @@ class _SetupScreenState extends State<SetupScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              const SizedBox(height: 40),
+              const SizedBox(height: 80),
               Text(
                 AppLocalizations.of(context)!.app_title,
                 style: const TextStyle(
-                  fontSize: 32,
+                  fontSize: 40,
                   fontWeight: FontWeight.bold,
-                  color: Color(0xFF1D53BF),
+                  color: Colors.black,
                 ),
               ),
               const SizedBox(height: 8),
               Text(
                 AppLocalizations.of(context)!.enter_setup_code,
                 style: const TextStyle(
-                  fontSize: 18,
-                  color: Colors.black87,
+                  fontSize: 20,
+                  color: Color(0xFF2B59BA),                
                 ),
               ),
               const SizedBox(height: 32),
@@ -105,7 +105,7 @@ class _SetupScreenState extends State<SetupScreen> {
                         backgroundColor: const Color(0xFF1D53BF),
                         foregroundColor: Colors.white,
                         padding: const EdgeInsets.symmetric(
-                            horizontal: 40, vertical: 16),
+                            horizontal: 50, vertical: 20),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(8),
                         ),

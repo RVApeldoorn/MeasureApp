@@ -14,7 +14,7 @@ class ApiService {
 
       _dio.options.headers['Authorization'] = 'Bearer $token';
 
-      final response = await _dio.get('http://145.137.51.24:5005/api/patient/sessions');
+      final response = await _dio.get('http://localhost:5005/api/patient/sessions');
 
       if (response.statusCode == 200) {
         return response.data;
@@ -52,10 +52,7 @@ class ApiService {
         ]
       };
 
-      final response = await _dio.post(
-        'http://145.137.51.24:5005/api/patient/submit',
-        data: data,
-      );
+      await _dio.post('http://localjoost:5005/api/patient/submit', data: data);
     } catch (e) {
       throw Exception('Submit error: $e');
     }
