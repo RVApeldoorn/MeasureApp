@@ -3,74 +3,101 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:measureapp/bloc/ble_bloc.dart';
 import 'package:measureapp/bloc/ble_event.dart';
 import 'package:measureapp/bloc/ble_state.dart';
-import 'package:measureapp/widgets/measurement_step_screen.dart'; 
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:measureapp/widgets/measurement_step_screen.dart';
 
 class DistanceScreen extends StatefulWidget {
-  const DistanceScreen({super.key});
+  const DistanceScreen({Key? key}) : super(key: key);
 
   @override
   State<DistanceScreen> createState() => _DistanceScreenState();
 }
 
 class _DistanceScreenState extends State<DistanceScreen> {
-  String? _currentMeasurement;
+  bool measurementDone = false;
+  String? measurementValue;
 
   void _onMeasurePressed() {
     context.read<BleBloc>().add(BleSendMeasureCommand());
   }
 
-  double? _parseToDouble(String? value) {
-    if (value == null) return null;
-    final cleaned = value.replaceAll(RegExp(r'[^0-9.]'), '');
-    return double.tryParse(cleaned);
+  double? _parseDistance(String raw) {
+    try {
+      return double.parse(raw.replaceAll(RegExp(r'[^0-9.]'), '').trim());
+    } catch (_) {
+      return null;
+    }
+  }
+
+  double? get parsedCurrent => measurementValue != null ? _parseDistance(measurementValue!) : null;
+
+  double? get parsedReference {
+    final state = context.read<BleBloc>().state;
+    if (state is BleMeasurementState && state.referenceMeasurement != null) {
+      return _parseDistance(state.referenceMeasurement!);
+    }
+    return null;
+  }
+
+  double? get verschil {
+    if (parsedCurrent != null && parsedReference != null) {
+      return parsedReference! - parsedCurrent!;
+    }
+    return null;
   }
 
   @override
-  Widget build(BuildContext context) {
-    final l10n = AppLocalizations.of(context)!;
-    return BlocListener<BleBloc, BleState>(
-      listener: (context, state) {
-        if (state is BleMeasurementSuccess) {
-          setState(() {
-            _currentMeasurement = state.distance;
-          });
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text("Meting ontvangen")),
-          );
-        }
+Widget build(BuildContext context) {
+  return BlocListener<BleBloc, BleState>(
+  listener: (context, state) {
+    if (state is BleMeasurementState && state.currentMeasurement != null) {
+      setState(() {
+        measurementDone = true;
+        measurementValue = state.currentMeasurement;
+      });
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Meting succesvol')),
+      );
+    } else if (state is BleMeasurementSuccess) {
+      setState(() {
+        measurementDone = true;
+        measurementValue = state.distance;
+      });
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Meting succesvol')),
+      );
+    } else if (state is BleError) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(state.message)),
+      );
+    }
+  },
+    // 👇 Gebruik Builder om `print` toe te staan vóór UI-render
+    child: Builder(
+      builder: (context) {
+        // 👇 Debug logs hier
+        print("DEBUG → measurementValue: $measurementValue");
+        print("DEBUG → parsedCurrent: $parsedCurrent");
+        print("DEBUG → parsedReference: $parsedReference");
+        print("DEBUG → verschil: $verschil");
+
+        return MeasurementStepScreen(
+          title: "Afstand meten",
+          imagePath: 'assets/images/distance.png',
+          stepTitle: "Stap 2: Afstand",
+          description: (parsedReference != null && parsedCurrent != null && verschil != null)
+              ? "Afstand: ${parsedCurrent!.toStringAsFixed(1)} cm\n"
+                "Referentie: ${parsedReference!.toStringAsFixed(1)} cm\n"
+                "Verschil: ${verschil!.toStringAsFixed(1)} cm"
+              : "Zorg dat het object op de juiste afstand staat en druk op meten.",
+          stepIndex: 2,
+          totalSteps: 8,
+          isLoading: false,
+          onNext: _onMeasurePressed,
+          customButtonText: measurementDone ? 'Opnieuw meten' : 'Meet afstand',
+        );
       },
-      child: BlocBuilder<BleBloc, BleState>(
-        builder: (context, state) {
-          String description = l10n.measureDescription;
+    ),
+  );
+}
 
-          final reference = (state is BleMeasurementState) ? state.referenceMeasurement : null;
-          final double? refValue = _parseToDouble(reference);
-          final double? currentValue = _parseToDouble(_currentMeasurement);
-
-          if (refValue != null && currentValue != null) {
-            final verschil = (refValue - currentValue).toStringAsFixed(1);
-            description = "Referentie: ${refValue.toStringAsFixed(1)} cm\n"
-                          "Huidige meting: ${currentValue.toStringAsFixed(1)} cm\n"
-                          "Verschil: $verschil cm";
-          } else if (refValue != null) {
-            description = "Referentiewaarde is ${refValue.toStringAsFixed(1)} cm.\n"
-                          "Druk op meten om te vergelijken.";
-          }
-
-          return MeasurementStepScreen(
-            title: l10n.titleLength,
-            imagePath: 'assets/images/distance.png',
-            stepTitle: l10n.lengthStep,
-            description: description,
-            stepIndex: 7,
-            totalSteps: 7,
-            isLoading: state is BleMeasuring,
-            onNext: _onMeasurePressed,
-            customButtonText: l10n.measureDistance,
-          );
-        },
-      ),
-    );
-  }
 }

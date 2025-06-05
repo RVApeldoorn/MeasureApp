@@ -46,21 +46,21 @@ class _ReferenceMeasurementScreenState extends State<ReferenceMeasurementScreen>
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
     return BlocListener<BleBloc, BleState>(
-      listener: (context, state) {
-        if (state is BleMeasurementSuccess) {
-          setState(() {
-            measurementDone = true;
-            measurementValue = state.distance;
-          });
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text("Referentiemeting succesvol")),
-          );
-        } else if (state is BleError) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text(state.message)),
-          );
-        }
-      },
+    listener: (context, state) {
+    if (state is BleMeasurementState && state.currentMeasurement != null) {
+      setState(() {
+        measurementDone = true;
+        measurementValue = state.currentMeasurement;
+      });
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text("Referentiemeting succesvol")),
+      );
+    } else if (state is BleError) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(state.message)),
+      );
+    }
+  },
       child: MeasurementStepScreen(
         title: l10n.referenceTitle,
         imagePath: 'assets/images/reference.png',
