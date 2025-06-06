@@ -126,6 +126,10 @@ class _SettingsScreenState extends State<SettingsScreen> {
                         value: Locale('ar'),
                         child: Text('Arabisch (ar-ma)'),
                       ),
+                      DropdownMenuItem(
+                        value: Locale('tr'),
+                        child: Text('Türkçe (tr)'),
+                      ),
                     ],
                   ),
                 ),
