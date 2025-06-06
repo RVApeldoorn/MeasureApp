@@ -29,20 +29,19 @@ class ConnectScreen extends StatelessWidget {
           imagePath = 'assets/images/neutral.png';
           isLoading = true;
           buttonText = 'Verbinding maken...';
-        } else if (state is BleConnected || true) {
+        } else if (state is BleConnected) {
           imagePath = 'assets/images/connected.png';
           buttonText = l10n.next;
           onPressed = () {
             Navigator.push(context, MaterialPageRoute(builder: (_) => ReferenceMeasurementScreen(
-              sessionId: this.sessionId, // sessionId,
-              requestId: this.requestId, // requestId,
+              sessionId: this.sessionId,
+              requestId: this.requestId,
             )));
           };
-        } 
-        // else if (state is BleError) {
-        //   imagePath = 'assets/images/not_connected.png';
-        //   buttonText = 'Opnieuw proberen';
-        // }
+        } else if (state is BleError) {
+          imagePath = 'assets/images/not_connected.png';
+          buttonText = 'Opnieuw proberen';
+        }
 
         return MeasurementActionScreen(
           title: l10n.measurement,

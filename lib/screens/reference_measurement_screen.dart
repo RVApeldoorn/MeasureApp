@@ -24,7 +24,7 @@ class ReferenceMeasurementScreen extends StatefulWidget {
 
 class _ReferenceMeasurementScreenState
     extends State<ReferenceMeasurementScreen> {
-  bool measurementDone = true;
+  bool measurementDone = false;
   String? measurementValue;
 
   void _onMeasurePressed() {
@@ -33,9 +33,8 @@ class _ReferenceMeasurementScreenState
   }
 
   void _onNextPressed() {
-    // if (measurementDone && measurementValue != null) {
-    if (measurementDone) { // temp fix for test
-      // context.read<BleBloc>().add(SaveReferenceMeasurement(measurementValue!));
+    if (measurementDone && measurementValue != null) {
+      context.read<BleBloc>().add(SaveReferenceMeasurement(measurementValue!));
       Navigator.push(
         context,
         MaterialPageRoute(builder: (_) => DistanceScreen( 
