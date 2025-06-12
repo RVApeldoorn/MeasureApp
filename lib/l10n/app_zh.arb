@@ -41,6 +41,8 @@
     "month10": "十月",
     "month11": "十一月",
     "month12": "十二月",
+    "measurement": "测量",
+    "heightMeasurement": "身高测量",
     "hangLaser": "将激光仪挂在空墙上，然后点击“下一步”进行参考测量。",
     "resultReference": "参考测量为",
     "saveReference": "保存参考值",
@@ -52,9 +54,7 @@
     "measureDescription": "正在进行测量。点击“测量距离”以完成测量。",
     "titleLength": "长度测量",
     "lengthStep": "步骤 7",
-    "measureDistance": "测量距离", 
-    "measurement": "测量",
-    "heightMeasurement": "身高测量",
+    "measureDistance": "测量距离",
     "relaxChild": "让孩子放松呼吸。",
     "step2Elephant": "像大象一样用力吹气！",
     "blablabla": "嗒嗒嗒",
@@ -75,5 +75,11 @@
     "next": "下一步",
     "growth": "您的成长",
     "home": "首页",
-    "language": "语言"
-}
+    "language": "语言",
+    "skip": "跳过",
+    "successful": "测量成功。\n在此查看您的结果",
+    "view": "提交并查看",
+    "questions": "问题",
+    "questionExpand": "有任何问题吗？请咨询医生。医生会尽快与您联系。",
+    "submit": "提交测量"
+  }

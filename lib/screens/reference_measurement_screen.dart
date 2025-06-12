@@ -8,13 +8,9 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:measureapp/screens/distance_screen.dart';
 
 class ReferenceMeasurementScreen extends StatefulWidget {
-  // final int sessionId;
-  // final int requestId;
 
   const ReferenceMeasurementScreen({
     Key? key,
-    // required this.sessionId,
-    // required this.requestId,
   }) : super(key: key);
 
   @override
@@ -34,14 +30,10 @@ class _ReferenceMeasurementScreenState
 
   void _onNextPressed() {
     if (measurementDone && measurementValue != null) {
-    // if (measurementDone) { // temp fix for test
       context.read<BleBloc>().add(SaveReferenceMeasurement(measurementValue!));
-      print("bAAA");
       Navigator.push(
         context,
         MaterialPageRoute(builder: (_) => DistanceScreen( 
-          // sessionId: widget.sessionId,
-          // requestId: widget.requestId,
         )),
       );
     } else {
@@ -91,9 +83,7 @@ class _ReferenceMeasurementScreenState
                     : l10n.hangLaser,
             stepIndex: 1,
             totalSteps: 3,
-            // isLoading: false,
             onNext: measurementDone ? _onNextPressed : _onMeasurePressed,
-            // customButtonText: measurementDone ? l10n.nextStep : l10n.saveReference,
           ),
         ),
       ),
