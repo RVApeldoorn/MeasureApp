@@ -21,7 +21,9 @@ class StepFive extends StatelessWidget {
       totalSteps: 5,
       onNext: () => Navigator.push(
         context,
-        MaterialPageRoute(builder: (_) => ConnectScreen(sessionId: sessionId, requestId: requestId)),
+        MaterialPageRoute(builder: (_) => ConnectScreen(
+          // sessionId: sessionId, requestId: requestId
+          )),
       ),
     );
   }

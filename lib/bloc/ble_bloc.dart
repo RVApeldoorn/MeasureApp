@@ -8,6 +8,8 @@ import 'ble_state.dart';
 class BleBloc extends Bloc<BleEvent, BleState> {
   final BleService _bleService;
   StreamSubscription<List<int>>? _subscription;
+  String? _lastReferenceMeasurement;
+
 
   String? _lastDistance;
   Timer? _timeoutTimer;
@@ -161,13 +163,14 @@ class BleBloc extends Bloc<BleEvent, BleState> {
   }
 
   void _onSaveReferenceMeasurement(SaveReferenceMeasurement event, Emitter<BleState> emit) {
-    if (state is BleMeasurementState) {
-      final currentState = state as BleMeasurementState;
-      emit(currentState.copyWith(referenceMeasurement: event.measurement));
-    } else {
-      emit(BleMeasurementState(referenceMeasurement: event.measurement));
-    }
+  _lastReferenceMeasurement = event.measurement;
+  if (state is BleMeasurementState) {
+    final currentState = state as BleMeasurementState;
+    emit(currentState.copyWith(referenceMeasurement: event.measurement));
+  } else {
+    emit(BleMeasurementState(referenceMeasurement: event.measurement));
   }
+}
 
   void _onSaveCurrentMeasurement(SaveCurrentMeasurement event, Emitter<BleState> emit) {
     if (state is BleMeasurementState) {
@@ -178,10 +181,21 @@ class BleBloc extends Bloc<BleEvent, BleState> {
     }
   }
 
-  void _onMeasurementSuccess(BleMeasurementSuccessEvent event, Emitter<BleState> emit) {
-    print("Measurement success met waarde: ${event.distance}");
-    emit(BleMeasurementSuccess(event.distance));
+ void _onMeasurementSuccess(BleMeasurementSuccessEvent event, Emitter<BleState> emit) {
+  print("Measurement success met waarde: ${event.distance}");
+
+  if (state is BleMeasurementState) {
+    final currentState = state as BleMeasurementState;
+    emit(currentState.copyWith(currentMeasurement: event.distance));
+  } else {
+    emit(BleMeasurementState(
+      referenceMeasurement: _lastReferenceMeasurement,
+      currentMeasurement: event.distance,
+    ));
   }
+}
+
+
 
   @override
   Future<void> close() {

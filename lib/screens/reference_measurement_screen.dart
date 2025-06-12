@@ -5,16 +5,12 @@ import 'package:measureapp/bloc/ble_event.dart';
 import 'package:measureapp/bloc/ble_state.dart';
 import 'package:measureapp/widgets/generic_step_screen.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'distance_screen.dart';
+import 'package:measureapp/screens/distance_screen.dart';
 
 class ReferenceMeasurementScreen extends StatefulWidget {
-  final int sessionId;
-  final int requestId;
 
   const ReferenceMeasurementScreen({
     Key? key,
-    required this.sessionId,
-    required this.requestId,
   }) : super(key: key);
 
   @override
@@ -23,9 +19,9 @@ class ReferenceMeasurementScreen extends StatefulWidget {
 }
 
 class _ReferenceMeasurementScreenState
-    extends State<ReferenceMeasurementScreen> {
-  bool measurementDone = false;
-  String? measurementValue;
+  extends State<ReferenceMeasurementScreen> {
+    bool measurementDone = false;
+    String? measurementValue;
 
   void _onMeasurePressed() {
     context.read<BleBloc>().add(BleSendMeasureCommand());
@@ -38,8 +34,6 @@ class _ReferenceMeasurementScreenState
       Navigator.push(
         context,
         MaterialPageRoute(builder: (_) => DistanceScreen( 
-          sessionId: widget.sessionId,
-          requestId: widget.requestId,
         )),
       );
     } else {
@@ -58,35 +52,40 @@ class _ReferenceMeasurementScreenState
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
-    return BlocListener<BleBloc, BleState>(
-      listener: (context, state) {
-        if (state is BleMeasurementSuccess) {
-          setState(() {
-            measurementDone = true;
-            measurementValue = state.distance;
-          });
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text("Referentiemeting succesvol")),
-          );
-        } else if (state is BleError) {
-          ScaffoldMessenger.of(
-            context,
-          ).showSnackBar(SnackBar(content: Text(state.message)));
-        }
-      },
-      child: GenericStepScreen(
-        title: l10n.measurement,
-        imagePath: 'assets/images/reference.png',
-        stepTitle: l10n.heightMeasurement,
-        description:
-            measurementDone && measurementValue != null
-                ? _formatMeters(measurementValue!)
-                : l10n.hangLaser,
-        stepIndex: 1,
-        totalSteps: 3,
-        // isLoading: false,
-        onNext: _onNextPressed,
-        // customButtonText: measurementDone ? l10n.nextStep : l10n.saveReference,
+    return BlocProvider<BleBloc>.value(
+      value: context.read<BleBloc>(),
+      child: Scaffold(
+        body: BlocListener<BleBloc, BleState>(
+          listener: (context, state) {
+            print("Listener state: $state");
+            if (state is BleMeasurementSuccess) {
+              print("Referentiemeting succesvol: ${state.distance}");
+              setState(() {
+                measurementDone = true;
+                measurementValue = state.distance;
+              });
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(content: Text("Referentiemeting succesvol")),
+              );
+            } else if (state is BleError) {
+              ScaffoldMessenger.of(
+                context,
+              ).showSnackBar(SnackBar(content: Text(state.message)));
+            }
+          },
+          child: GenericStepScreen(
+            title: l10n.measurement,
+            imagePath: 'assets/images/reference.png',
+            stepTitle: l10n.heightMeasurement,
+            description:
+                measurementDone && measurementValue != null
+                    ? _formatMeters(measurementValue!)
+                    : l10n.hangLaser,
+            stepIndex: 1,
+            totalSteps: 3,
+            onNext: measurementDone ? _onNextPressed : _onMeasurePressed,
+          ),
+        ),
       ),
     );
   }

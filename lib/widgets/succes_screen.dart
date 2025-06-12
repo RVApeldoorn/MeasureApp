@@ -7,10 +7,12 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:measureapp/services/api_service.dart';
 
 class MeasurementFinishedScreen extends StatefulWidget {
-  final int sessionId;
-  final int requestId;
+  // final int sessionId;
+  // final int requestId;
   
-  const MeasurementFinishedScreen({super.key, required this.sessionId, required this.requestId});
+  const MeasurementFinishedScreen({super.key, 
+  // required this.sessionId, required this.requestId
+  });
 
   @override
   State<MeasurementFinishedScreen> createState() => _MeasurementFinishedScreenState();
@@ -29,12 +31,12 @@ class _MeasurementFinishedScreenState extends State<MeasurementFinishedScreen> {
   Future<void> _submitMeasurement() async {
     try {
       final ApiService apiService = ApiService();
-      await apiService.submitMeasurement(
-        sessionId: widget.sessionId,
-        measurementRequestId: widget.requestId,
-        value: '128.4',
-        note: _noteController.text,
-      );
+      // await apiService.submitMeasurement(
+      //   sessionId: widget.sessionId,
+      //   measurementRequestId: widget.requestId,
+      //   value: '128.4',
+      //   note: _noteController.text,
+      // );
       print("Measurement submitted");
     } catch (e) {
       // Handle error

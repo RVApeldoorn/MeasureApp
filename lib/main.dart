@@ -4,7 +4,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:measureapp/screens/setup_screen.dart';
 import 'package:measureapp/screens/pin_screen.dart';
 import 'package:measureapp/screens/pin_lock_screen.dart';
-// import 'package:measureapp/screens/connect_screen.dart';
+import 'package:measureapp/screens/connect_screen.dart';
 import 'package:measureapp/utils/secure_storage.dart';
 import 'package:measureapp/state/locale_provider.dart';
 import 'package:provider/provider.dart';
@@ -31,7 +31,7 @@ class HomeScreen extends StatelessWidget {
     Widget startScreen;
 
     if (token == null) {
-      startScreen = const SetupScreen();
+      startScreen = const ConnectScreen();
     } else if (pin == null) {
       startScreen = const PinScreen();
     } else {
@@ -44,7 +44,9 @@ class HomeScreen extends StatelessWidget {
         create: (_) => LocaleProvider(),
         child: Consumer<LocaleProvider>(
           builder: (context, localeProvider, _) {
-            return MaterialApp(
+            return BlocProvider(
+              create: (_) => BleBloc(BleService()),
+              child: MaterialApp(
               debugShowCheckedModeBanner: false,
               title: 'Measure App',
               theme: ThemeData(primarySwatch: Colors.blue),
@@ -64,6 +66,7 @@ class HomeScreen extends StatelessWidget {
                 Locale('ar'),
                 Locale('tr'),
               ],
+            )
             );
           },
         ),

@@ -3,15 +3,14 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:measureapp/bloc/ble_bloc.dart';
 import 'package:measureapp/bloc/ble_event.dart';
 import 'package:measureapp/bloc/ble_state.dart';
+import 'distance_screen.dart';
 import 'reference_measurement_screen.dart';
+// import 'step_two_measurement_screen.dart';
 import 'package:measureapp/widgets/MeasurementActionScreen.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class ConnectScreen extends StatelessWidget {
-  final int sessionId;
-  final int requestId;
-
-  const ConnectScreen({super.key, required this.sessionId, required this.requestId});
+  const ConnectScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -19,7 +18,7 @@ class ConnectScreen extends StatelessWidget {
     return BlocBuilder<BleBloc, BleState>(
       builder: (context, state) {
         String imagePath = 'assets/images/neutral.png';
-        String buttonText = l10n.heightMeasurement;
+        String buttonText = 'Verbinding maken';
         bool isLoading = false;
         VoidCallback onPressed = () {
           context.read<BleBloc>().add(BleScanAndConnect());
@@ -31,12 +30,9 @@ class ConnectScreen extends StatelessWidget {
           buttonText = 'Verbinding maken...';
         } else if (state is BleConnected) {
           imagePath = 'assets/images/connected.png';
-          buttonText = l10n.next;
+          buttonText = 'Volgende';
           onPressed = () {
-            Navigator.push(context, MaterialPageRoute(builder: (_) => ReferenceMeasurementScreen(
-              sessionId: this.sessionId,
-              requestId: this.requestId,
-            )));
+            Navigator.push(context, MaterialPageRoute(builder: (_) => const ReferenceMeasurementScreen()));
           };
         } else if (state is BleError) {
           imagePath = 'assets/images/not_connected.png';

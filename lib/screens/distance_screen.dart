@@ -3,84 +3,103 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:measureapp/bloc/ble_bloc.dart';
 import 'package:measureapp/bloc/ble_event.dart';
 import 'package:measureapp/bloc/ble_state.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:measureapp/widgets/succes_screen.dart';
 import 'package:measureapp/widgets/generic_step_screen.dart'; 
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+// import 'package:measureapp/widgets/measurement_step_screen.dart';
 
 class DistanceScreen extends StatefulWidget {
-  final int sessionId;
-  final int requestId;
-  
-  const DistanceScreen({super.key, required this.sessionId, required this.requestId});
+  const DistanceScreen({Key? key}) : super(key: key);
 
   @override
   State<DistanceScreen> createState() => _DistanceScreenState();
 }
 
 class _DistanceScreenState extends State<DistanceScreen> {
-  String? _currentMeasurement;
+  bool measurementDone = false;
+  String? measurementValue;
 
   void _onMeasurePressed() {
     context.read<BleBloc>().add(BleSendMeasureCommand());
-    Navigator.push(
-      context,
-      MaterialPageRoute(builder: (_) => MeasurementFinishedScreen(
-        sessionId: widget.sessionId, // sessionId,
-        requestId: widget.requestId,)),
-    );
   }
 
-  double? _parseToDouble(String? value) {
-    if (value == null) return null;
-    final cleaned = value.replaceAll(RegExp(r'[^0-9.]'), '');
-    return double.tryParse(cleaned);
+  double? _parseDistance(String raw) {
+    try {
+      return double.parse(raw.replaceAll(RegExp(r'[^0-9.]'), '').trim());
+    } catch (_) {
+      return null;
+    }
+  }
+
+  double? get parsedCurrent => measurementValue != null ? _parseDistance(measurementValue!) : null;
+
+  double? get parsedReference {
+    final state = context.read<BleBloc>().state;
+    if (state is BleMeasurementState && state.referenceMeasurement != null) {
+      return _parseDistance(state.referenceMeasurement!);
+    }
+    return null;
+  }
+
+  double? get verschil {
+    if (parsedCurrent != null && parsedReference != null) {
+      return parsedReference! - parsedCurrent!;
+    }
+    return null;
   }
 
   @override
   Widget build(BuildContext context) {
-    final l10n = AppLocalizations.of(context)!;
-    return BlocListener<BleBloc, BleState>(
-      listener: (context, state) {
-        if (state is BleMeasurementSuccess) {
-          setState(() {
-            _currentMeasurement = state.distance;
-          });
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text("Meting ontvangen")),
-          );
-        }
-      },
-      child: BlocBuilder<BleBloc, BleState>(
+  final l10n = AppLocalizations.of(context)!;
+  return BlocListener<BleBloc, BleState>(
+  listener: (context, state) {
+    if (state is BleMeasurementState && state.currentMeasurement != null) {
+      setState(() {
+        measurementDone = true;
+        measurementValue = state.currentMeasurement;
+      });
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Meting succesvol')),
+      );
+    } else if (state is BleMeasurementSuccess) {
+      setState(() {
+        measurementDone = true;
+        measurementValue = state.distance;
+      });
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Meting succesvol')),
+      );
+    } else if (state is BleError) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(state.message)),
+      );
+    }
+  },
+    child: BlocBuilder<BleBloc, BleState>(
         builder: (context, state) {
           String description = l10n.measureDescription;
 
-          final reference = (state is BleMeasurementState) ? state.referenceMeasurement : null;
-          final double? refValue = _parseToDouble(reference);
-          final double? currentValue = _parseToDouble(_currentMeasurement);
-
-          if (refValue != null && currentValue != null) {
-            final verschil = (refValue - currentValue).toStringAsFixed(1);
-            description = "Referentie: ${refValue.toStringAsFixed(1)} cm\n"
-                          "Huidige meting: ${currentValue.toStringAsFixed(1)} cm\n"
-                          "Verschil: $verschil cm";
-          } else if (refValue != null) {
-            description = "Referentiewaarde is ${refValue.toStringAsFixed(1)} cm.\n"
-                          "Druk op meten om te vergelijken.";
+          if (parsedReference != null && parsedCurrent != null && verschil != null) {
+            description = "Afstand: ${parsedCurrent!.toStringAsFixed(1)} cm\n"
+                "Referentie: ${parsedReference!.toStringAsFixed(1)} cm\n"
+                "Verschil: ${verschil!.toStringAsFixed(1)} cm";
+          } else {
+            description = "Zorg dat het object op de juiste afstand staat en druk op meten.";
           }
 
-          return GenericStepScreen(
-            title: l10n.measurement,
-            imagePath: 'assets/images/distance.png',
-            stepTitle: l10n.heightMeasurement,
-            description: description,
-            stepIndex: 2,
-            totalSteps: 3,
-            // isLoading: state is BleMeasuring,
-            onNext: _onMeasurePressed,
-            // customButtonText: l10n.measureDistance,
-          );
-        },
-      ),
-    );
-  }
+        return GenericStepScreen(
+          title: l10n.measurement,
+          imagePath: 'assets/images/distance.png',
+          stepTitle: l10n.heightMeasurement,
+          description: description,
+          stepIndex: 2,
+          totalSteps: 8,
+          onNext: _onMeasurePressed,
+          // customButtonText: measurementDone ? 'Opnieuw meten' : 'Meet afstand',
+        );
+      },
+    ),
+  );
+}
+
 }
