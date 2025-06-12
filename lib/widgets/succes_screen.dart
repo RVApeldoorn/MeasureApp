@@ -7,11 +7,12 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:measureapp/services/api_service.dart';
 
 class MeasurementFinishedScreen extends StatefulWidget {
-  // final int sessionId;
-  // final int requestId;
+  final int sessionId;
+  final int requestId;
   
   const MeasurementFinishedScreen({super.key, 
-  // required this.sessionId, required this.requestId
+    required this.sessionId,
+    required this.requestId
   });
 
   @override
@@ -29,19 +30,13 @@ class _MeasurementFinishedScreenState extends State<MeasurementFinishedScreen> {
   }
 
   Future<void> _submitMeasurement() async {
-    try {
-      final ApiService apiService = ApiService();
-      // await apiService.submitMeasurement(
-      //   sessionId: widget.sessionId,
-      //   measurementRequestId: widget.requestId,
-      //   value: '128.4',
-      //   note: _noteController.text,
-      // );
-      print("Measurement submitted");
-    } catch (e) {
-      // Handle error
-      print('Error submitting measurement: $e');
-    }
+    final ApiService apiService = ApiService();
+    await apiService.submitMeasurement(
+      sessionId: widget.sessionId,
+      measurementRequestId: widget.requestId,
+      value: '128.4',
+      note: _noteController.text,
+    );
   }
 
   @override
@@ -61,7 +56,6 @@ class _MeasurementFinishedScreenState extends State<MeasurementFinishedScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            /// Titel
             Text(
               l10n.heightMeasurement,
               style: const TextStyle(
@@ -71,7 +65,6 @@ class _MeasurementFinishedScreenState extends State<MeasurementFinishedScreen> {
             ),
             const SizedBox(height: 16),
 
-            /// Inzicht kaart
             Container(
               width: double.infinity,
               padding: const EdgeInsets.all(16),
@@ -100,14 +93,13 @@ class _MeasurementFinishedScreenState extends State<MeasurementFinishedScreen> {
                   ),
                   const SizedBox(height: 16),
 
-                  /// Afbeelding + knop (Stack)
                   ClipRRect(
                     borderRadius: BorderRadius.circular(12),
                     child: Stack(
                       alignment: Alignment.center,
                       children: [
                         Image.asset(
-                          'assets/images/growthCurve/example_curve.jpg', // Zet hier je asset pad
+                          'assets/images/growthCurve/example_curve.jpg',
                           fit: BoxFit.cover,
                           height: 120,
                           width: double.infinity,
@@ -138,7 +130,6 @@ class _MeasurementFinishedScreenState extends State<MeasurementFinishedScreen> {
 
             const SizedBox(height: 24),
 
-            /// Vraagblok
             Container(
               width: double.infinity,
               padding: const EdgeInsets.all(16),
@@ -167,7 +158,6 @@ class _MeasurementFinishedScreenState extends State<MeasurementFinishedScreen> {
                   ),
                   const SizedBox(height: 16),
 
-                  /// Tekstveld
                   TextField(
                     maxLines: 4,
                     controller: _noteController,

@@ -44,7 +44,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
     final l10n = AppLocalizations.of(context)!;
     final localeProvider = Provider.of<LocaleProvider>(context);
 
-    const EdgeInsets settingsPadding = EdgeInsets.only(left: 16.0); // Adjust this value to control indentation
+    const EdgeInsets settingsPadding = EdgeInsets.only(left: 16.0);
 
     return Scaffold(
       appBar: TopBar(title: l10n.settings),

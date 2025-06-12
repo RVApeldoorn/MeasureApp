@@ -31,7 +31,7 @@ class HomeScreen extends StatelessWidget {
     Widget startScreen;
 
     if (token == null) {
-      startScreen = const ConnectScreen();
+      startScreen = const SetupScreen();
     } else if (pin == null) {
       startScreen = const PinScreen();
     } else {

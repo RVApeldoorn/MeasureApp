@@ -74,7 +74,6 @@ class MeasurementActionScreen extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                // Stap en overslaan
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 16.0),
                   child: Row(
@@ -108,7 +107,6 @@ class MeasurementActionScreen extends StatelessWidget {
                   ),
                 ),
                 const Spacer(),
-                // Dots + knop
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 16.0),
                   child: Column(

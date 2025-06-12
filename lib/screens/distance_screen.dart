@@ -4,9 +4,7 @@ import 'package:measureapp/bloc/ble_bloc.dart';
 import 'package:measureapp/bloc/ble_event.dart';
 import 'package:measureapp/bloc/ble_state.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:measureapp/widgets/succes_screen.dart';
 import 'package:measureapp/widgets/generic_step_screen.dart'; 
-// import 'package:measureapp/widgets/measurement_step_screen.dart';
 
 class DistanceScreen extends StatefulWidget {
   const DistanceScreen({Key? key}) : super(key: key);
@@ -95,7 +93,6 @@ class _DistanceScreenState extends State<DistanceScreen> {
           stepIndex: 2,
           totalSteps: 8,
           onNext: _onMeasurePressed,
-          // customButtonText: measurementDone ? 'Opnieuw meten' : 'Meet afstand',
         );
       },
     ),

@@ -57,9 +57,7 @@ class _ReferenceMeasurementScreenState
       child: Scaffold(
         body: BlocListener<BleBloc, BleState>(
           listener: (context, state) {
-            print("Listener state: $state");
             if (state is BleMeasurementSuccess) {
-              print("Referentiemeting succesvol: ${state.distance}");
               setState(() {
                 measurementDone = true;
                 measurementValue = state.distance;

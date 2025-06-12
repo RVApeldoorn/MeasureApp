@@ -32,7 +32,7 @@ class TopBar extends StatelessWidget implements PreferredSizeWidget {
               child: Text(
                 title,
                 style: const TextStyle(
-                  fontSize: 28, // Larger title
+                  fontSize: 28,
                   color: Colors.black,
                   fontWeight: FontWeight.bold,
                 ),
