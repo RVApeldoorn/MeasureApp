@@ -9,8 +9,10 @@ class WeightMeasurementScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
         title: Text('Measure Weight'),
+        backgroundColor: Color(0xFFE7EDF9),
       ),
       body: Center(
         child: Text('Weight Measurement Page\nSession ID: $sessionId\nRequest ID: $requestId'),

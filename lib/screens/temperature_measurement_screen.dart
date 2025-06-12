@@ -9,8 +9,10 @@ class TemperatureMeasurementScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
         title: Text('Measure Temperature'),
+        backgroundColor: Color(0xFFE7EDF9),
       ),
       body: Center(
         child: Text('Temperature Measurement Page\nSession ID: $sessionId\nRequest ID: $requestId'),

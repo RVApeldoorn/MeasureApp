@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:measureapp/screens/height_measurement_screen.dart';
 import 'package:measureapp/screens/measurement_result_screen.dart';
-import 'package:measureapp/screens/step_one_measurement_screen.dart';
+import 'package:measureapp/screens/measurement_screens/step_one.dart';
+import 'package:measureapp/screens/relaxing_exercise/exercise_one.dart';
 import 'package:measureapp/screens/temperature_measurement_screen.dart';
 import 'package:measureapp/screens/weight_measurement_screen.dart';
 import 'package:measureapp/utils/date_utils.dart';
 import 'package:measureapp/utils/measurement_utils.dart';
 import 'package:measureapp/widgets/measurement_request.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class SessionBlock extends StatelessWidget {
   final dynamic session;
@@ -18,12 +19,8 @@ class SessionBlock extends StatelessWidget {
     final now = DateTime.now();
     final difference = dueDate.difference(now).inDays;
 
-    if (difference <= 0) {
-      return const Color(0xFFFF8A80);
-    } else if (difference <= 2) {
-      return const Color(0xFFFFAB91);
-    } else if (difference <= 7) {
-      return const Color(0xFFFFCC80);
+    if (difference <= 7) {
+      return const Color.fromARGB(255, 255, 153, 0);
     } else {
       return const Color(0xFF1D53BF);
     }
@@ -51,7 +48,7 @@ class SessionBlock extends StatelessWidget {
 
     return Card(
       elevation: 0,
-      color: const Color(0xFFE8EDF8),
+      color: const Color(0xFFE7EDF9),
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
       child: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -96,7 +93,6 @@ class SessionBlock extends StatelessWidget {
                         text: formatDateManual(context, dueDate),
                         style: TextStyle(
                           color: dueDateColor,
-                          fontStyle: FontStyle.italic,
                         ),
                       ),
                     ],
@@ -127,13 +123,32 @@ class SessionBlock extends StatelessWidget {
                       case 'height':
                         Navigator.push(
                           context,
-                          MaterialPageRoute(
-                            builder: (context) => IntroStepOneScreen(
-                              sessionId: session['sessionId'],
-                              requestId: request['requestId'],
-                            ),
-                          ),
-                        );
+                            MaterialPageRoute(
+                              builder: (context) {
+                                return FutureBuilder<SharedPreferences>(
+                                  future: SharedPreferences.getInstance(),
+                                  builder: (context, snapshot) {
+                                    final prefs = snapshot.data;
+                                    final isChildMode = prefs?.getBool('childMode') == true;
+                                    if (!snapshot.hasData) {
+                                      return const Center(child: CircularProgressIndicator());
+                                    }
+                                    if (isChildMode) {
+                                      return ExerciseOne(
+                                        sessionId: session['sessionId'],
+                                        requestId: request['requestId'],
+                                      );
+                                    } else {
+                                      return StepOne(
+                                        sessionId: session['sessionId'],
+                                        requestId: request['requestId'],
+                                      );
+                                    }
+                                  },
+                                );
+                              },
+                            )
+                          );
                         break;
                       case 'weight':
                         Navigator.push(

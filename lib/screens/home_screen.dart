@@ -1,13 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:measureapp/screens/relaxing_exercise/exercise_one.dart';
 import 'package:measureapp/services/api_service.dart';
 import 'package:measureapp/utils/date_utils.dart';
 import 'package:measureapp/widgets/big_button.dart';
 import 'package:measureapp/widgets/bottom_navigation_bar.dart';
 import 'package:measureapp/widgets/no_sessions_block.dart';
 import 'package:measureapp/widgets/session_block.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:measureapp/widgets/top_bar.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:measureapp/screens/growth_curve_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   @override
@@ -21,11 +23,13 @@ class _HomeScreenState extends State<HomeScreen> {
   bool _isLoading = true;
   String _errorMessage = '';
   bool _noSessionsFound = false;
+  bool _isChildModeEnabled = false;
 
   @override
   void initState() {
     super.initState();
     _fetchSessionsData();
+    _loadChildModeSetting();
   }
 
   Future<void> _fetchSessionsData() async {
@@ -46,80 +50,121 @@ class _HomeScreenState extends State<HomeScreen> {
     }
   }
 
+  Future<void> _loadChildModeSetting() async {
+    final prefs = await SharedPreferences.getInstance();
+    setState(() {
+      _isChildModeEnabled = prefs.getBool('childMode') ?? false;
+      _isLoading = false;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     final t = AppLocalizations.of(context)!;
 
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: TopBar(title: t.app_title),
-      bottomNavigationBar: const BottomNavBar(),
+      bottomNavigationBar: BottomNavBar(
+        isChildModeEnabled: _isChildModeEnabled,
+        isOnHomeScreen: true,
+        currentIndex: 1,
+      ),
       body: RefreshIndicator(
         onRefresh: _fetchSessionsData,
-        child: _isLoading
-            ? Center(child: CircularProgressIndicator())
-            : _errorMessage.isNotEmpty
+        child:
+            _isLoading
+                ? Center(child: CircularProgressIndicator())
+                : _errorMessage.isNotEmpty
                 ? ListView(
-                    physics: const AlwaysScrollableScrollPhysics(),
-                    children: [Center(child: Text('error: $_errorMessage'))],
-                  )
+                  physics: AlwaysScrollableScrollPhysics(),
+                  children: [Center(child: Text('error: $_errorMessage'))],
+                )
                 : ListView(
-                    physics: const AlwaysScrollableScrollPhysics(),
-                    padding: const EdgeInsets.all(16.0),
-                    children: [
-                      Text(
-                        getGreeting(context),
-                        style: TextStyle(
-                        fontSize: 35,
+                  physics: AlwaysScrollableScrollPhysics(),
+                  padding: EdgeInsets.all(16.0),
+                  children: [
+                    Text(
+                      getGreeting(context),
+                      style: TextStyle(
+                        fontSize: 30,
                         color: Color(0xFF1D53BF),
                         fontWeight: FontWeight.bold,
                       ),
-                      ),
-                      Text(
-                        _patientName,
-                        style: TextStyle(
-                        fontSize: 25,
+                    ),
+                    Text(
+                      _patientName,
+                      style: TextStyle(
+                        fontSize: 30,
                         color: Colors.black,
                         fontWeight: FontWeight.bold,
                       ),
-                      ),
-                      SizedBox(height: 10),
-                      if (_noSessionsFound)
-                        NoSessionsBlock()
-                      else
-                        ..._sessions.asMap().entries.map((entry) {
-                          var session = entry.value;
-                          return Column(
-                            children: [
-                              SessionBlock(session: session),
-                              SizedBox(height: 4),
-                            ],
-                          );
-                      }),
-                      Row(
+                    ),
+                    SizedBox(height: 10),
+                    if (_noSessionsFound) NoSessionsBlock(),
+                    ..._sessions.asMap().entries.map((entry) {
+                      var session = entry.value;
+                      return Column(
                         children: [
-                          Expanded(
-                            child: BigButton(
-                              title: t.growth_safari,
-                              iconWidget: SvgPicture.asset(
-                                'assets/icons/lion.svg',
-                              ),
-                              onPressed: () {},
-                            ),
-                          ),
-                          SizedBox(width: 8),
-                          Expanded(
-                            child: BigButton(
-                              title: t.growth_curve,
-                              iconWidget: SvgPicture.asset(
-                                'assets/icons/loop.svg',
-                              ),
-                              onPressed: () {},
-                            ),
-                          ),
+                          SessionBlock(session: session),
+                          SizedBox(height: 4),
                         ],
-                      ),
-                    ],
-                  ),
+                      );
+                    }),
+                    SizedBox(height: 10),
+                    Row(
+                      children: [
+                        if (_isChildModeEnabled)
+                          Expanded(
+                            child: BigButton(
+                              title: t.exercises,
+                              subtitle: t.exercise,
+                              iconWidget: Image.asset(
+                                'assets/icons/yoga.png',
+                                width: 55,
+                                height: 55,
+                                fit: BoxFit.contain,
+                              ),
+
+                              onPressed: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder:
+                                        (context) => ExerciseOne(
+                                          sessionId: 0,
+                                          requestId: 0,
+                                        ),
+                                  ),
+                                );
+                              },
+                            ),
+                          ),
+                        if (_isChildModeEnabled) SizedBox(width: 8),
+                        Expanded(
+                          child: BigButton(
+                            title: t.insight,
+                            subtitle: t.growth_curve,
+                            iconWidget: Image.asset(
+                              'assets/icons/ruler.png',
+                              width: 55,
+                              height: 55,
+                              fit: BoxFit.contain,
+                            ),
+                            onPressed: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => GrowthCurveScreen(),
+                                ),
+                              );
+                            },
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
       ),
     );
   }

@@ -3,7 +3,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:measureapp/bloc/ble_bloc.dart';
 import 'package:measureapp/bloc/ble_event.dart';
 import 'package:measureapp/bloc/ble_state.dart';
-import 'package:measureapp/widgets/measurement_step_screen.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:measureapp/widgets/succes_screen.dart';
+import 'package:measureapp/widgets/generic_step_screen.dart'; 
+// import 'package:measureapp/widgets/measurement_step_screen.dart';
 
 class DistanceScreen extends StatefulWidget {
   const DistanceScreen({Key? key}) : super(key: key);
@@ -46,7 +49,8 @@ class _DistanceScreenState extends State<DistanceScreen> {
   }
 
   @override
-Widget build(BuildContext context) {
+  Widget build(BuildContext context) {
+  final l10n = AppLocalizations.of(context)!;
   return BlocListener<BleBloc, BleState>(
   listener: (context, state) {
     if (state is BleMeasurementState && state.currentMeasurement != null) {
@@ -71,29 +75,27 @@ Widget build(BuildContext context) {
       );
     }
   },
-    // 👇 Gebruik Builder om `print` toe te staan vóór UI-render
-    child: Builder(
-      builder: (context) {
-        // 👇 Debug logs hier
-        print("DEBUG → measurementValue: $measurementValue");
-        print("DEBUG → parsedCurrent: $parsedCurrent");
-        print("DEBUG → parsedReference: $parsedReference");
-        print("DEBUG → verschil: $verschil");
+    child: BlocBuilder<BleBloc, BleState>(
+        builder: (context, state) {
+          String description = l10n.measureDescription;
 
-        return MeasurementStepScreen(
-          title: "Afstand meten",
-          imagePath: 'assets/images/distance.png',
-          stepTitle: "Stap 2: Afstand",
-          description: (parsedReference != null && parsedCurrent != null && verschil != null)
-              ? "Afstand: ${parsedCurrent!.toStringAsFixed(1)} cm\n"
+          if (parsedReference != null && parsedCurrent != null && verschil != null) {
+            description = "Afstand: ${parsedCurrent!.toStringAsFixed(1)} cm\n"
                 "Referentie: ${parsedReference!.toStringAsFixed(1)} cm\n"
-                "Verschil: ${verschil!.toStringAsFixed(1)} cm"
-              : "Zorg dat het object op de juiste afstand staat en druk op meten.",
+                "Verschil: ${verschil!.toStringAsFixed(1)} cm";
+          } else {
+            description = "Zorg dat het object op de juiste afstand staat en druk op meten.";
+          }
+
+        return GenericStepScreen(
+          title: l10n.measurement,
+          imagePath: 'assets/images/distance.png',
+          stepTitle: l10n.heightMeasurement,
+          description: description,
           stepIndex: 2,
           totalSteps: 8,
-          isLoading: false,
           onNext: _onMeasurePressed,
-          customButtonText: measurementDone ? 'Opnieuw meten' : 'Meet afstand',
+          // customButtonText: measurementDone ? 'Opnieuw meten' : 'Meet afstand',
         );
       },
     ),
