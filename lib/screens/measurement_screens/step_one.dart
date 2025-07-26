@@ -4,24 +4,21 @@ import 'package:measureapp/screens/measurement_screens/step_two.dart';
 import 'package:measureapp/widgets/generic_step_screen.dart';
 
 class StepOne extends StatelessWidget {
-  final int sessionId;
-  final int requestId;
+  const StepOne({super.key});
 
-  const StepOne({required this.sessionId, required this.requestId});
-  
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
     return GenericStepScreen(
       title: l10n.measurement,
       imagePath: 'assets/images/instructions/step1.jpg',
-      stepTitle: l10n.heightMeasurement,
-      description: l10n.step1,
+      stepTitle: l10n.posture_instructions,
+      description: l10n.postureStep1,
       stepIndex: 0,
-      totalSteps: 5,
+      totalSteps: 3,
       onNext: () => Navigator.push(
         context,
-        MaterialPageRoute(builder: (_) => StepTwo(sessionId: sessionId, requestId: requestId)),
+            MaterialPageRoute(builder: (_) => const StepTwo()),
       ),
     );
   }
