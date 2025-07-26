@@ -13,3 +13,10 @@ String getTranslatedMeasurementName(BuildContext context, String measurementName
       return measurementName; 
   }
 }
+
+String formatCentimeters(String mmString) {
+  final mm =
+      double.tryParse(mmString.replaceAll(RegExp(r'[^0-9.]'), '').trim()) ?? 0;
+  final centimeters = mm / 10;
+  return centimeters.toStringAsFixed(1);
+}

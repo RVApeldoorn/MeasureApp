@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:measureapp/utils/date_utils.dart';
+import 'package:measureapp/utils/measurement_utils.dart';
 
 class MeasurementResultScreen extends StatelessWidget {
   final String measurementName;
@@ -26,7 +27,9 @@ class MeasurementResultScreen extends StatelessWidget {
             ...measurementValue.map((value) {
               return Card(
                 child: ListTile(
-                  title: Text('Value: ${value['value']}'),
+                  title: Text(
+                    'Value: ${formatCentimeters(value['value'].toString())} cm',
+                  ),
                   subtitle: Text(
                     'Date: ${value['takenAt'] != null ? formatDateOnly(value['takenAt']) : 'Onbekend'}',
                   ),

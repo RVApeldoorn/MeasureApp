@@ -37,10 +37,8 @@ class GenericStepScreen extends StatelessWidget {
         isChildModeEnabled: true,
         isOnHomeScreen: false,
       ),
-
-      /// Scrollbare boveninhoud
       body: SingleChildScrollView(
-        padding: const EdgeInsets.all(16.0),
+        padding: const EdgeInsets.all(24.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -62,13 +60,11 @@ class GenericStepScreen extends StatelessWidget {
           ],
         ),
       ),
-
-      /// Onderaan vast geplakt
       bottomSheet: Container(
         width: double.infinity,
         constraints: const BoxConstraints(
           minHeight: 240,
-        ), // ← hier is het verschil
+        ),
         decoration: const BoxDecoration(
           color: Colors.white,
         ),
@@ -81,8 +77,9 @@ class GenericStepScreen extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                  padding: const EdgeInsets.all(12.0),
                   child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Expanded(
                         child: Text.rich(

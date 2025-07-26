@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:measureapp/bloc/measurement_bloc.dart';
+import 'package:measureapp/bloc/measurement_event.dart';
 import 'package:measureapp/screens/relaxing_exercise/exercise_one.dart';
 import 'package:measureapp/services/api_service.dart';
 import 'package:measureapp/utils/date_utils.dart';
@@ -7,11 +10,13 @@ import 'package:measureapp/widgets/big_button.dart';
 import 'package:measureapp/widgets/bottom_navigation_bar.dart';
 import 'package:measureapp/widgets/no_sessions_block.dart';
 import 'package:measureapp/widgets/session_block.dart';
+import 'package:measureapp/screens/growth_curve_screen.dart';
 import 'package:measureapp/widgets/top_bar.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:measureapp/screens/growth_curve_screen.dart';
 
 class HomeScreen extends StatefulWidget {
+  const HomeScreen({super.key});
+
   @override
   _HomeScreenState createState() => _HomeScreenState();
 }
@@ -28,6 +33,7 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
     super.initState();
+    context.read<MeasurementBloc>().add(const CancelMeasurement());
     _fetchSessionsData();
     _loadChildModeSetting();
   }
@@ -74,19 +80,19 @@ class _HomeScreenState extends State<HomeScreen> {
         onRefresh: _fetchSessionsData,
         child:
             _isLoading
-                ? Center(child: CircularProgressIndicator())
+                ? const Center(child: CircularProgressIndicator())
                 : _errorMessage.isNotEmpty
                 ? ListView(
-                  physics: AlwaysScrollableScrollPhysics(),
+                  physics: const AlwaysScrollableScrollPhysics(),
                   children: [Center(child: Text('error: $_errorMessage'))],
                 )
                 : ListView(
-                  physics: AlwaysScrollableScrollPhysics(),
-                  padding: EdgeInsets.all(16.0),
+                  physics: const AlwaysScrollableScrollPhysics(),
+                  padding: const EdgeInsets.all(16.0),
                   children: [
                     Text(
                       getGreeting(context),
-                      style: TextStyle(
+                      style: const TextStyle(
                         fontSize: 30,
                         color: Color(0xFF1D53BF),
                         fontWeight: FontWeight.bold,
@@ -94,53 +100,48 @@ class _HomeScreenState extends State<HomeScreen> {
                     ),
                     Text(
                       _patientName,
-                      style: TextStyle(
+                      style: const TextStyle(
                         fontSize: 30,
                         color: Colors.black,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
-                    SizedBox(height: 10),
+                    const SizedBox(height: 10),
                     if (_noSessionsFound) NoSessionsBlock(),
                     ..._sessions.asMap().entries.map((entry) {
                       var session = entry.value;
                       return Column(
                         children: [
                           SessionBlock(session: session),
-                          SizedBox(height: 4),
+                          const SizedBox(height: 4),
                         ],
                       );
                     }),
-                    SizedBox(height: 10),
+                    const SizedBox(height: 10),
                     Row(
                       children: [
                         if (_isChildModeEnabled)
                           Expanded(
                             child: BigButton(
                               title: t.exercises,
-                              subtitle: t.exercise,
+                              subtitle: t.relaxing_exercise,
                               iconWidget: Image.asset(
                                 'assets/icons/yoga.png',
                                 width: 55,
                                 height: 55,
                                 fit: BoxFit.contain,
                               ),
-
                               onPressed: () {
                                 Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                    builder:
-                                        (context) => ExerciseOne(
-                                          sessionId: 0,
-                                          requestId: 0,
-                                        ),
+                                    builder: (context) => const ExerciseOne(),
                                   ),
                                 );
                               },
                             ),
                           ),
-                        if (_isChildModeEnabled) SizedBox(width: 8),
+                        if (_isChildModeEnabled) const SizedBox(width: 8),
                         Expanded(
                           child: BigButton(
                             title: t.insight,
@@ -155,7 +156,8 @@ class _HomeScreenState extends State<HomeScreen> {
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                  builder: (context) => GrowthCurveScreen(),
+                                  builder:
+                                      (context) => const GrowthCurveScreen(),
                                 ),
                               );
                             },

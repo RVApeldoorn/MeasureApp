@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:measureapp/bloc/measurement_bloc.dart';
+import 'package:measureapp/bloc/measurement_event.dart';
 import 'package:measureapp/screens/growth_curve_screen.dart';
 import 'package:measureapp/screens/home_screen.dart';
 import 'package:measureapp/screens/relaxing_exercise/exercise_one.dart';
@@ -41,22 +44,29 @@ class BottomNavBar extends StatelessWidget {
               unselectedLabelStyle: const TextStyle(fontSize: 12, color: Colors.black),
               onTap: (index) {
                 if (index == 1) {
+                    // Reset measurement state before navigating to HomeScreen
+                    context.read<MeasurementBloc>().add(
+                      const CancelMeasurement(),
+                    );
                   Navigator.pushReplacement(
                     context,
-                    MaterialPageRoute(builder: (context) => HomeScreen()),
+                      MaterialPageRoute(
+                        builder: (context) => const HomeScreen(),
+                      ),
                   );
                 } else if (isChildModeEnabled && index == 2) {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (_) => ExerciseOne(
-                        sessionId: 0,
-                        requestId: 0,
-                      ),
-                    ),
+                      builder: (_) => const ExerciseOne()),
                   );
                 } else if (index == 0) {
-                  Navigator.push(context, MaterialPageRoute(builder: (_) => GrowthCurveScreen()));
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (_) => const GrowthCurveScreen(),
+                      ),
+                    );
                 }
               },
               items: [
@@ -90,9 +100,12 @@ class BottomNavBar extends StatelessWidget {
           : Center(
               child: GestureDetector(
                 onTap: () {
-                  Navigator.pushReplacement(
+                    Navigator.pushAndRemoveUntil(
                     context,
-                    MaterialPageRoute(builder: (context) => HomeScreen()),
+                      MaterialPageRoute(
+                        builder: (context) => const HomeScreen(),
+                      ),
+                      (route) => false,
                   );
                 },
                 child: Column(
@@ -106,7 +119,10 @@ class BottomNavBar extends StatelessWidget {
                     const SizedBox(height: 4),
                     Text(
                       l10n.home,
-                      style: TextStyle(fontSize: 12, color: Colors.black),
+                        style: const TextStyle(
+                          fontSize: 12,
+                          color: Colors.black,
+                        ),
                     ),
                   ],
                 ),

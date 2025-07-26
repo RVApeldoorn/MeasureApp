@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:measureapp/widgets/bottom_navigation_bar.dart';
 import 'package:measureapp/widgets/top_bar.dart';
 
@@ -12,6 +13,7 @@ class MeasurementActionScreen extends StatelessWidget {
   final String buttonText;
   final bool isLoading;
   final VoidCallback onPressed;
+  final VoidCallback? onSkip;
 
   const MeasurementActionScreen({
     Key? key,
@@ -24,17 +26,23 @@ class MeasurementActionScreen extends StatelessWidget {
     required this.buttonText,
     this.isLoading = false,
     required this.onPressed,
+    this.onSkip,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+
     return Scaffold(
       backgroundColor: const Color(0xFFEFF3FB),
       appBar: TopBar(title: title),
-      bottomNavigationBar: const BottomNavBar(),
-
+      bottomNavigationBar: const BottomNavBar(
+        currentIndex: 0,
+        isChildModeEnabled: true,
+        isOnHomeScreen: false,
+      ),
       body: SingleChildScrollView(
-        padding: const EdgeInsets.all(16.0),
+        padding: const EdgeInsets.all(24.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -58,13 +66,11 @@ class MeasurementActionScreen extends StatelessWidget {
           ],
         ),
       ),
-
       bottomSheet: Container(
         width: double.infinity,
         constraints: const BoxConstraints(minHeight: 240),
         decoration: const BoxDecoration(
           color: Colors.white,
-          borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
         ),
         padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 12.0),
         child: SafeArea(
@@ -75,7 +81,7 @@ class MeasurementActionScreen extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                  padding: const EdgeInsets.all(12.0),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
@@ -84,7 +90,7 @@ class MeasurementActionScreen extends StatelessWidget {
                           TextSpan(
                             children: [
                               TextSpan(
-                                text: 'Stap ${stepIndex + 1}\n',
+                                text: '${l10n.step} ${stepIndex + 1}\n',
                                 style: const TextStyle(
                                   fontWeight: FontWeight.bold,
                                   color: Color(0xFF1D53BF),
@@ -103,6 +109,30 @@ class MeasurementActionScreen extends StatelessWidget {
                           ),
                         ),
                       ),
+                      if (onSkip != null)
+                        ElevatedButton(
+                          onPressed: onSkip,
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: const Color(0xFF1D53BF),
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 16.0,
+                              vertical: 8.0,
+                            ),
+                            minimumSize: const Size(150, 48),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                            elevation: 0,
+                          ),
+                          child: Text(
+                            l10n.skip,
+                            style: const TextStyle(
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 18,
+                            ),
+                          ),
+                        ),
                     ],
                   ),
                 ),
@@ -149,7 +179,9 @@ class MeasurementActionScreen extends StatelessWidget {
                                   ),
                                 )
                               : Text(
-                                  buttonText,
+                                    buttonText == l10n.next
+                                        ? l10n.next
+                                        : buttonText,
                                   style: const TextStyle(
                                     color: Colors.white,
                                     fontSize: 18,

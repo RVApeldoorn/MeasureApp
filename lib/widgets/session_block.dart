@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:measureapp/bloc/measurement_bloc.dart';
+import 'package:measureapp/bloc/measurement_event.dart';
 import 'package:measureapp/screens/measurement_result_screen.dart';
 import 'package:measureapp/screens/measurement_screens/step_one.dart';
 import 'package:measureapp/screens/relaxing_exercise/exercise_one.dart';
@@ -9,11 +11,12 @@ import 'package:measureapp/utils/date_utils.dart';
 import 'package:measureapp/utils/measurement_utils.dart';
 import 'package:measureapp/widgets/measurement_request.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class SessionBlock extends StatelessWidget {
   final dynamic session;
 
-  const SessionBlock({required this.session});
+  const SessionBlock({required this.session, super.key});
 
   Color getDueDateColor(DateTime dueDate) {
     final now = DateTime.now();
@@ -103,6 +106,8 @@ class SessionBlock extends StatelessWidget {
             ...requests.map((request) {
               String measurementName = request['measurementType']['name'];
               bool isFilled = (request['measurementValue'] as List?)?.isNotEmpty == true;
+              final sessionId = session['sessionId'] as int;
+              final requestId = request['requestId'] as int;
 
               return MeasurementRequest(
                 title: getTranslatedMeasurementName(context, measurementName),
@@ -121,42 +126,44 @@ class SessionBlock extends StatelessWidget {
                   } else {
                     switch (measurementName.toLowerCase()) {
                       case 'height':
+                        print(
+                          "DEBUG: Dispatching StartMeasurement with sessionId: $sessionId, requestId: $requestId",
+                        );
+                        context.read<MeasurementBloc>().add(
+                          StartMeasurement(sessionId, requestId),
+                        );
                         Navigator.push(
                           context,
-                            MaterialPageRoute(
-                              builder: (context) {
-                                return FutureBuilder<SharedPreferences>(
+                          MaterialPageRoute(
+                            builder:
+                                (context) => FutureBuilder<SharedPreferences>(
                                   future: SharedPreferences.getInstance(),
                                   builder: (context, snapshot) {
                                     final prefs = snapshot.data;
-                                    final isChildMode = prefs?.getBool('childMode') == true;
+                                    final isChildMode =
+                                        prefs?.getBool('childMode') == true;
                                     if (!snapshot.hasData) {
-                                      return const Center(child: CircularProgressIndicator());
+                                      return const Center(
+                                        child: CircularProgressIndicator(),
+                                      );
                                     }
                                     if (isChildMode) {
-                                      return ExerciseOne(
-                                        sessionId: session['sessionId'],
-                                        requestId: request['requestId'],
-                                      );
+                                      return const ExerciseOne();
                                     } else {
-                                      return StepOne(
-                                        sessionId: session['sessionId'],
-                                        requestId: request['requestId'],
-                                      );
+                                      return const StepOne();
                                     }
                                   },
-                                );
-                              },
-                            )
-                          );
+                                ),
+                          ),
+                        );
                         break;
                       case 'weight':
                         Navigator.push(
                           context,
                           MaterialPageRoute(
                             builder: (context) => WeightMeasurementScreen(
-                              sessionId: session['sessionId'],
-                              requestId: request['requestId'],
+                                  sessionId: sessionId,
+                                  requestId: requestId,
                             ),
                           ),
                         );
@@ -166,8 +173,8 @@ class SessionBlock extends StatelessWidget {
                           context,
                           MaterialPageRoute(
                             builder: (context) => TemperatureMeasurementScreen(
-                              sessionId: session['sessionId'],
-                              requestId: request['requestId'],
+                                  sessionId: sessionId,
+                                  requestId: requestId,
                             ),
                           ),
                         );
