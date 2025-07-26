@@ -126,9 +126,6 @@ class SessionBlock extends StatelessWidget {
                   } else {
                     switch (measurementName.toLowerCase()) {
                       case 'height':
-                        print(
-                          "DEBUG: Dispatching StartMeasurement with sessionId: $sessionId, requestId: $requestId",
-                        );
                         context.read<MeasurementBloc>().add(
                           StartMeasurement(sessionId, requestId),
                         );

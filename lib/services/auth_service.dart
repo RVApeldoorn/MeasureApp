@@ -14,8 +14,6 @@ class AuthService {
         ),
       );
 
-      print('Token: ${response.data}');
-
       if (response.statusCode == 200) {
         final token = response.data['token'];
         if (token != null) {
@@ -26,7 +24,6 @@ class AuthService {
       
       return false;
     } catch (e) {
-      print('Error making request: $e');
       return false;
     }
   }

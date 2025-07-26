@@ -14,19 +14,15 @@ Future<void> requestPermissions() async {
           Permission.locationWhenInUse,
         ].request();
 
-    print("Permission status: $status");
     if (status.values.any(
       (perm) => perm.isDenied || perm.isPermanentlyDenied,
     )) {
       if (status[Permission.bluetoothConnect]!.isPermanentlyDenied) {
-        print("BLUETOOTH_CONNECT permanently denied. Opening settings.");
         await openAppSettings();
       }
       throw Exception("Bluetooth permissions denied: $status");
     }
-    print("All permissions granted");
   } catch (e) {
-    print("Error requesting permissions: $e");
     rethrow;
   }
 }
@@ -55,7 +51,6 @@ class BleMeasurementService implements MeasurementService {
     try {
       await requestPermissions();
 
-      // Scan for XiaoESP32
       final scanStream = _ble.scanForDevices(withServices: [serviceUuid]);
       await for (final device in scanStream.timeout(
         const Duration(seconds: 10),
@@ -70,15 +65,12 @@ class BleMeasurementService implements MeasurementService {
       if (_device == null) {
         throw Exception("ESP32-C6 Ultrasoon not found");
       }
-      print("Found device: ${_device!.name} (${_device!.id})");
 
-      // Connect to device
       final completer = Completer<void>();
       _connectionSubscription = _ble
           .connectToDevice(id: _device!.id)
           .listen(
             (update) {
-              print("Connection state: ${update.connectionState}");
               if (update.connectionState == DeviceConnectionState.connected) {
                 completer.complete();
               } else if (update.connectionState ==
@@ -91,7 +83,6 @@ class BleMeasurementService implements MeasurementService {
               }
             },
             onError: (e) {
-              print("Connection error: $e");
               if (!completer.isCompleted) {
                 completer.completeError(e);
               }
@@ -100,7 +91,6 @@ class BleMeasurementService implements MeasurementService {
 
       await completer.future;
 
-      // Subscribe to characteristic
       final characteristic = QualifiedCharacteristic(
         serviceId: serviceUuid,
         characteristicId: characteristicUuid,
@@ -113,22 +103,16 @@ class BleMeasurementService implements MeasurementService {
           .subscribeToCharacteristic(characteristic)
           .listen(
             (data) {
-              print("Data received: ${utf8.decode(data)}");
               _streamController!.add(data);
             },
             onError: (e) {
-              print("Data stream error: $e");
               _streamController!.addError(e);
             },
             onDone: () {
-              print("Data stream closed");
               _streamController!.close();
             },
           );
-
-      print("Connected and subscribed to ${_device!.name}");
     } catch (e) {
-      print("Scan and connect failed: $e");
       rethrow;
     }
   }
@@ -150,24 +134,17 @@ class BleMeasurementService implements MeasurementService {
         commandCharacteristic,
         value: utf8.encode("start"),
       );
-      print("Sent start command");
     } catch (e) {
-      print("Error sending start command: $e");
       rethrow;
     }
   }
 
   @override
   Future<void> disconnect() async {
-    try {
-      await _dataSubscription?.cancel();
-      await _connectionSubscription?.cancel();
-      _streamController?.close();
-      _device = null;
-      _sensorDataStream = null;
-      print("Disconnected from device");
-    } catch (e) {
-      print("Error disconnecting: $e");
-    }
+    await _dataSubscription?.cancel();
+    await _connectionSubscription?.cancel();
+    _streamController?.close();
+    _device = null;
+    _sensorDataStream = null;
   }
 }

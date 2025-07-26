@@ -18,9 +18,6 @@ class ExerciseTwo extends StatelessWidget {
       builder: (context, state) {
         final sessionId = state.sessionId;
         final requestId = state.requestId;
-        print(
-          "DEBUG: ExerciseTwo accessed state - sessionId: $sessionId, requestId: $requestId, state: $state",
-        );
 
         return GenericStepScreen(
           title: l10n.measurement,

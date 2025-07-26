@@ -44,7 +44,6 @@ class BottomNavBar extends StatelessWidget {
               unselectedLabelStyle: const TextStyle(fontSize: 12, color: Colors.black),
               onTap: (index) {
                 if (index == 1) {
-                    // Reset measurement state before navigating to HomeScreen
                     context.read<MeasurementBloc>().add(
                       const CancelMeasurement(),
                     );
